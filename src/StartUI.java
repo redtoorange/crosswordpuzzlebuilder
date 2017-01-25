@@ -1,9 +1,4 @@
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 
 /**
  * ${FILE_NAME}.java - Description
@@ -41,7 +36,7 @@ public class StartUI {
 		generateButton = new GenerateButton( this, dictionarySelector );
 		mainPanel.add( generateButton );
 
-		//mainFrame.pack();
+		mainFrame.pack();
 		mainFrame.setVisible( true );
 	}
 
