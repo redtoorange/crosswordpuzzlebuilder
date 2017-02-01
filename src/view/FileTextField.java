@@ -1,3 +1,5 @@
+package view;
+
 import javax.swing.*;
 
 /**
@@ -12,13 +14,14 @@ public class FileTextField extends JTextField {
 
 	private boolean validFileName = false;
 
-	public FileTextField(int width){
-		super("", width);
+	public FileTextField( int width ) {
+		super( "", width );
+		setEditable( false );
 	}
 
-	public void setText( String text ){
-		if( !text.isEmpty() ){
-			if( text.endsWith( REQUIED_EXTENSION ) ){
+	public void setText( String text ) {
+		if ( !text.isEmpty( ) ) {
+			if ( text.endsWith( REQUIED_EXTENSION ) ) {
 				super.setText( text );
 				validFileName = true;
 			}
@@ -27,13 +30,13 @@ public class FileTextField extends JTextField {
 				validFileName = false;
 			}
 		}
-		else{
+		else {
 			super.setText( "No File Selected" );
 			validFileName = false;
 		}
 	}
 
-	public boolean getValidFileName(){
+	public boolean getValidFileName() {
 		return validFileName;
 	}
 }

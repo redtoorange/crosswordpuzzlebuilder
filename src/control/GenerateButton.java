@@ -1,5 +1,8 @@
+package control;
+
+import view.DictionaryLoaderView;
+
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * ${FILE_NAME}.java - Description
@@ -11,20 +14,17 @@ public class GenerateButton extends JButton {
 	private final String GENERATE_LABEL = "Let's Light this Thing!";
 	private final String INVALID_LABEL = "Choose a File";
 
+	private DictionaryLoaderView dictionaryLoaderView;
 
-	private StartUI startUI;
-	private DictionarySelector dictionarySelector;
-
-	public GenerateButton( StartUI startUI, DictionarySelector dictionarySelector ){
+	public GenerateButton(DictionaryLoaderView dictionaryLoaderView ){
 		super( );
+		this.dictionaryLoaderView = dictionaryLoaderView;
 
-		this.dictionarySelector = dictionarySelector;
-		this.startUI = startUI;
 		setEnabled( false );
 		updateText();
 	}
 	public void sync(){
-		setEnabled( dictionarySelector.isReadyToGenerate() );
+		setEnabled( dictionaryLoaderView.getDictionarySelector().isReadyToGenerate() );
 		updateText( );
 	}
 

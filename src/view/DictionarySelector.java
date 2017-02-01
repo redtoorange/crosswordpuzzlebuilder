@@ -1,6 +1,9 @@
+package view;
+
+import control.OpenDictionaryButtonListener;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.io.File;
 
 /**
@@ -15,37 +18,41 @@ public class DictionarySelector extends JPanel {
 	private FileTextField fileNameTextField;
 	private JButton openDictionaryButton;
 	private JLabel dictionaryLabel;
-	private StartUI startui;
+	private DictionaryLoaderView startui;
 	private boolean readyToGenerate = false;
+	private BoxLayout layout;
 
-	public DictionarySelector( StartUI startui ){
-		init();
+	public DictionarySelector( DictionaryLoaderView startui ) {
+		layout = new BoxLayout( this, BoxLayout.X_AXIS );
+		setLayout( layout );
+		setBorder( BorderFactory.createEmptyBorder( 0, 0, 10, 0 ) );
+		init( );
 		this.startui = startui;
 	}
 
-	private void init(){
+	private void init() {
 		initLabel( );
 		initField( );
 		initChooser( );
 		initOpenButton( );
 	}
 
-	private void initLabel( ) {
-		dictionaryLabel = new JLabel( "Dictionary Location" );
+	private void initLabel() {
+		dictionaryLabel = new JLabel( "Dictionary Location " );
 		add( dictionaryLabel );
 	}
 
-	private void initField( ) {
+	private void initField() {
 		fileNameTextField = new FileTextField( 20 );
 		add( fileNameTextField );
 	}
 
-	private void initChooser( ) {
+	private void initChooser() {
 		dictionaryChooser = new JFileChooser( new File( System.getProperty( "user.dir" ) ) );
 		dictionaryChooser.addChoosableFileFilter( new FileNameExtensionFilter( "Text Document", ".txt" ) );
 	}
 
-	private void initOpenButton( ) {
+	private void initOpenButton() {
 		openDictionaryButton = new JButton( "Open Dictionary" );
 		openDictionaryButton.addActionListener( new OpenDictionaryButtonListener(
 				openDictionaryButton, dictionaryChooser, this, fileNameTextField
@@ -53,23 +60,25 @@ public class DictionarySelector extends JPanel {
 		add( openDictionaryButton );
 	}
 
-	public void setSelectedDictionary(File file){
+	public void setSelectedDictionary( File file ) {
 		selectedDictionary = file;
-		startui.sync();
+		startui.syncChildren( );
 	}
 
-	public void sync(){
+	public void sync() {
 		updateReadyToGenerate( );
 	}
 
-	private void updateReadyToGenerate( ) {
-		if(selectedDictionary != null)
+	private void updateReadyToGenerate() {
+		if ( selectedDictionary != null ) {
 			readyToGenerate = true;
-		else
+		}
+		else {
 			readyToGenerate = false;
+		}
 	}
 
-	public boolean isReadyToGenerate(){
+	public boolean isReadyToGenerate() {
 		return readyToGenerate;
 	}
 }

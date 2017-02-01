@@ -1,8 +1,8 @@
+import view.DictionaryLoaderView;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.awt.image.renderable.RenderedImageFactory;
 import java.io.File;
 import java.io.IOException;
 
@@ -66,7 +66,16 @@ public class Main {
 			e.printStackTrace();
 		}
 
-		new StartUI();
+
+//		try {
+//			//Stage s = new Stage();
+//			LoadDictionaryWindow window = new LoadDictionaryWindow();
+//			window.launch( args );
+//		}
+//		catch(Exception e){
+//
+//		}
+		new DictionaryLoaderView();
 
 
 	}

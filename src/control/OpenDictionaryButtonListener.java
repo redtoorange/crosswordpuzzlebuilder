@@ -1,3 +1,8 @@
+package control;
+
+import view.DictionarySelector;
+import view.FileTextField;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +22,7 @@ public class OpenDictionaryButtonListener implements ActionListener {
 	private File selectedFile;
 
 	public OpenDictionaryButtonListener( JButton openDictionaryButton, JFileChooser dictionaryChooser,
-										 DictionarySelector dictionarySelector, FileTextField fileNameTextField ) {
+	                                     DictionarySelector dictionarySelector, FileTextField fileNameTextField ) {
 		this.openDictionaryButton = openDictionaryButton;
 		this.dictionaryChooser = dictionaryChooser;
 		this.dictionarySelector = dictionarySelector;
@@ -28,22 +33,27 @@ public class OpenDictionaryButtonListener implements ActionListener {
 	public void actionPerformed( ActionEvent e ) {
 		if ( e.getSource( ) == openDictionaryButton ) {
 			int chooserReturnState = dictionaryChooser.showOpenDialog( dictionarySelector );
-			switch(chooserReturnState){
+			switch ( chooserReturnState ) {
 				case JFileChooser.APPROVE_OPTION:
 					selectedFile = dictionaryChooser.getSelectedFile( );
 					fileNameTextField.setText( selectedFile.getAbsolutePath( ) );
 
-					if( fileNameTextField.getValidFileName() )
+					if ( fileNameTextField.getValidFileName( ) ) {
 						dictionarySelector.setSelectedDictionary( selectedFile );
-					else
+					}
+					else {
 						dictionarySelector.setSelectedDictionary( null );
+					}
 
 					break;
-				case JFileChooser.CANCEL_OPTION: default:
-					if( selectedFile != null )
+				case JFileChooser.CANCEL_OPTION:
+				default:
+					if ( selectedFile != null ) {
 						fileNameTextField.setText( selectedFile.getAbsolutePath( ) );
-					else
+					}
+					else {
 						fileNameTextField.setText( "" );
+					}
 					break;
 			}
 		}
