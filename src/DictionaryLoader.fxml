@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane scaleShape="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DictionaryLoaderController">
+   <children>
+      <VBox alignment="CENTER" layoutY="2.0" prefHeight="200.0" prefWidth="378.0">
+         <children>
+            <Label text="Dictionary Location" />
+            <HBox alignment="CENTER" prefHeight="53.0" prefWidth="340.0">
+               <children>
+                  <TextField fx:id="filePathText" onAction="#filePathTextEntered" />
+                  <Button fx:id="fileChooserButton" mnemonicParsing="false" onAction="#fileChooserButtonClicked" text="..." />
+               </children>
+            </HBox>
+            <Button fx:id="generateButton" mnemonicParsing="false" onAction="#generateButtonClicked" text="Generate" />
+         </children>
+      </VBox>
+   </children>
+</Pane>
