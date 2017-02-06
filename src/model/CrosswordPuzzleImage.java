@@ -65,16 +65,21 @@ public class CrosswordPuzzleImage {
 						g2d.drawString( "" + letterGrid[x][y].getCharacter(),  x * cellSize + xOffset + (cellSize/4),y * cellSize + yOffset + (int)(cellSize * 0.85)  );
 					}
 				}
+				else{
+					g2d.setColor( Color.black );
+					g2d.fillRect( 	x * cellSize + xOffset,
+							y * cellSize + yOffset,
+							cellSize, cellSize );
+				}
 			}
 		}
 
-		g2d.setFont( new Font("TimesRoman", Font.PLAIN, (int)(cellSize * .75) ) );
+		g2d.setFont( new Font("TimesRoman", Font.BOLD, (int)(cellSize * .75) ) );
 		int wordNumber = 1;
 		for(Word w : grid.getWordsOnGrid()){
 			Vector2 pos = w.getWordPlacement().getStartPosition();
-			g2d.setColor( Color.black );
+			g2d.setColor( Color.BLACK );
 			g2d.drawString( "" + wordNumber,  pos.getX() * cellSize + xOffset + (int)(cellSize*.1), pos.getY() * cellSize + yOffset + (int)(cellSize * 0.6)  );
-
 			wordNumber++;
 		}
 	}

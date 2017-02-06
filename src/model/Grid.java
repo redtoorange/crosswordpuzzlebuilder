@@ -162,10 +162,12 @@ public class Grid {
 
 		for ( Word w : wordsOnGrid ) {
 			Vector2 pos = w.getWordPlacement( ).getStartPosition( );
-			pos.setX( pos.getX( ) - lowestX - 1 );
-			pos.setY( pos.getY( ) - lowestY - 1 );
+			int x = pos.getX() - lowestX + 1;
+			int y = pos.getY() - lowestY + 1;
+			pos.setX( x );
+			pos.setY( y );
 
-			w.getWordPlacement( ).setStartPosition( pos );
+			//w.getWordPlacement( ).setStartPosition( pos );
 		}
 
 		width = highestX - lowestX + 3;
