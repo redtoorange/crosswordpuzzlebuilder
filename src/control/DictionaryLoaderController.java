@@ -8,8 +8,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import model.DictionaryFile;
+import model.IncompleteWordException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * DictionaryLoaderController.java - Control the JavaFX GUI that will allow the user to select a file to load.
@@ -47,9 +49,18 @@ public class DictionaryLoaderController {
 	}
 
 	@FXML public void generateButtonClicked( ActionEvent event){
-		DictionaryFile dictionaryFile = new DictionaryFile( selectedFile );
-		System.out.println( dictionaryFile );
-		launchLoader.generateCrossword( dictionaryFile );
+		try{
+			DictionaryFile dictionaryFile = new DictionaryFile( selectedFile );
+			launchLoader.generateCrossword( dictionaryFile );
+		}
+		catch( IncompleteWordException iwe){
+			displayInvalidAlert();
+			disableGenerateButton();
+		}
+		catch(FileNotFoundException e){
+			displayInvalidAlert();
+			disableGenerateButton();
+		}
 	}
 
 	@FXML public void fileChooserButtonClicked( ActionEvent event){
@@ -57,10 +68,17 @@ public class DictionaryLoaderController {
 	}
 
 	private void launchFileChooser() {
-		File chosenFile = dictionaryChooser.showOpenDialog( null );
+		File chosenFile = null;
+		try{
+			chosenFile = dictionaryChooser.showOpenDialog( null );
+		}
+		catch ( NullPointerException npe){
+			displayInvalidAlert( );
+		}
 
-		if( chosenFile != null )
+		if( chosenFile != null ) {
 			processFile( chosenFile );
+		}
 	}
 
 	@FXML public void filePathTextEntered( ActionEvent event ){

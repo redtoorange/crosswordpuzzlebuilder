@@ -1,6 +1,8 @@
 package model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Scanner;
 
 /**
@@ -20,7 +22,7 @@ public class DictionaryFile {
 	 * Create a new Dictionary file from a pre-formatted text file.
 	 * @param file The Dictionary file that will be loaded.
 	 */
-	public DictionaryFile( File file ) {
+	public DictionaryFile( File file ) throws IncompleteWordException, FileNotFoundException {
 		this.file = file;
 		parseFile( );
 		reset();
@@ -29,20 +31,10 @@ public class DictionaryFile {
 	/**
 	 * Parse the text file, pulling out the tokens in word : definition pairs.
 	 */
-	private void parseFile() {
-		try {
-			Scanner fileScanner = new Scanner( file );
-			generateWordList( fileScanner );
-			fileScanner.close();
-		}
-		catch( IncompleteWordException e){
-			System.err.println( e );
-			e.printStackTrace( );
-		}
-		catch ( Exception e ) {
-			System.err.println( "Error parsing the file." );
-			e.printStackTrace( );
-		}
+	private void parseFile() throws IncompleteWordException, FileNotFoundException {
+		Scanner fileScanner = new Scanner( file );
+		generateWordList( fileScanner );
+		fileScanner.close();
 	}
 
 	private void generateWordList( Scanner scanner ) throws IncompleteWordException{

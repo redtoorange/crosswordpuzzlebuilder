@@ -8,7 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import model.SceneType;
+import model.ApplicationState;
+import model.CrosswordPuzzleImage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -21,26 +22,37 @@ import java.io.IOException;
  * @version - 04/Feb/2017
  */
 public class CrosswordViewController {
-	private ApplicationController launchLoader;
+	private ApplicationController applicationController;
+	private CrosswordPuzzleImage puzzleImage;
 
 	@FXML private Parent root;
 	@FXML private Button regenerateButton;
 	@FXML private Button saveButton;
 	@FXML private Button newDictionaryButton;
-	@FXML private ImageView imageView;
+	@FXML private ImageView answeredImage;
+	@FXML private ImageView blankImage;
 
 	@FXML public void saveButtonClicked( ActionEvent event){
 		System.out.println( "Save Button Clicked" );
 
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Save Image");
+		fileChooser.getExtensionFilters().add( new FileChooser.ExtensionFilter( "Image", "*.png" ) );
 
-		File file = fileChooser.showSaveDialog(null );
-		if (file != null) {
+		fileChooser.setTitle("Save Answer Key To...");
+		File answerKeyLocation = fileChooser.showSaveDialog( null );
+		if (answerKeyLocation != null) {
 			try {
-				Image image = imageView.getImage();
-				ImageIO.write( SwingFXUtils.fromFXImage(image,
-						null), "png", file);
+				ImageIO.write( puzzleImage.getAnsweredImage(), "png", answerKeyLocation );
+			} catch (IOException ex) {
+				System.out.println(ex.getMessage());
+			}
+		}
+
+		fileChooser.setTitle("Save Blank Puzzle To...");
+		File blankPuzzleLocatopn = fileChooser.showSaveDialog( null );
+		if (blankPuzzleLocatopn != null) {
+			try {
+				ImageIO.write( puzzleImage.getBlankImage(), "png", blankPuzzleLocatopn );
 			} catch (IOException ex) {
 				System.out.println(ex.getMessage());
 			}
@@ -49,21 +61,24 @@ public class CrosswordViewController {
 
 	@FXML public void regenerateButtonClicked( ActionEvent event){
 		System.out.println( "Regenerate Button Clicked" );
-		launchLoader.regenerateCrossword();
+		applicationController.regenerateCrossword();
 	}
 
 	@FXML public void newDictionaryButtonClicked( ActionEvent event){
 		System.out.println( "New Dictionary Button Clicked" );
-		launchLoader.swapScene( SceneType.DICTIONARY_LOADER );
+		applicationController.changeScene( ApplicationState.DICTIONARY_LOADER );
 	}
 
 	public void init( ApplicationController loader ){
-		this.launchLoader = loader;
+		this.applicationController = loader;
 	}
 
-	public void loadImage( File file ){
+	public void loadImage( CrosswordPuzzleImageController imageController ){
+		this.puzzleImage = imageController.getPuzzleImage();
+
 		try {
-			imageView.setImage( new Image( "file:" + file.getPath() ) );
+			answeredImage.setImage( new Image( "file:" + puzzleImage.getAnsweredImageFile().getPath() ) );
+			blankImage.setImage( new Image( "file:" + puzzleImage.getBlankImageFile().getPath() ) );
 		}
 		catch( Exception e ){
 			System.out.println( "unable to load image" );

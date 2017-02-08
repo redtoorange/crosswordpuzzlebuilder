@@ -1,5 +1,7 @@
 package model;
 
+import control.CrosswordPuzzleImageController;
+
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
@@ -49,14 +51,6 @@ public class Grid {
 	}
 
 	/**
-	 * Build and return a CrosswordPuzzleImage of the current state of the Grid.
-	 * @return an 8.5" x 11" sized image.
-	 */
-	public CrosswordPuzzleImage getPuzzleImage(){
-		return new CrosswordPuzzleImage( this, 50 );
-	}
-
-	/**
 	 * DESTRUCTIVE: Do a full reset of the grid.  This wipes all references, resets all the word and then builds the grid again.
 	 * @param width max width of the grid
 	 * @param height max height of the grid
@@ -80,7 +74,7 @@ public class Grid {
 	 * @return
 	 */
 	private void buildPuzzle( DictionaryFile dictionaryFile ) {
-		System.out.println( "building puzzle" );
+		//System.out.println( "building puzzle" );
 
 		WordList words = dictionaryFile.getWordList( );
 
@@ -90,7 +84,7 @@ public class Grid {
 			validBoard = attemptToPlaceAllWords( words );
 
 			if ( !validBoard ) {
-				System.out.println( "board invalid, resetting" );
+				//System.out.println( "board invalid, resetting" );
 				clearTheGrid( );
 				dictionaryFile.reset();
 			}
@@ -98,7 +92,7 @@ public class Grid {
 
 		//If the board is valid, resize the array it is in, then create the image
 		if ( validBoard ) {
-			System.out.println( "got a valid board" );
+			//System.out.println( "got a valid board" );
 			fitGridToCrossWord( );
 		}
 	}
@@ -107,7 +101,7 @@ public class Grid {
 	 * A soft-reset of the grid that doesn't manipulate the letterGrid Array.
 	 */
 	private void clearTheGrid( ) {
-		System.out.println( "grid reset" );
+		//System.out.println( "grid reset" );
 		resetGridCells( );
 		wordsOnGrid.clear( );
 	}
@@ -120,7 +114,7 @@ public class Grid {
 	private boolean attemptToPlaceAllWords( WordList words ) {
 		Word currentWord = words.getNextUnplaced( );
 		int iterations = words.listSize( ) * words.listSize( );
-		System.out.println( "attempting to place all words: " + iterations );
+		//System.out.println( "attempting to place all words: " + iterations );
 
 		while ( currentWord != null && iterations > 0 ) {
 			attemptToPlaceWord( currentWord );
@@ -139,7 +133,7 @@ public class Grid {
 	 * Resize the grid to fit snuggly around the Grid.  Basically clears out empty columns and rows.
 	 */
 	private void fitGridToCrossWord() {
-		System.out.println( "resizing grid" );
+		//System.out.println( "resizing grid" );
 		int lowestX = Integer.MAX_VALUE;
 		int highestX = Integer.MIN_VALUE;
 		int lowestY = Integer.MAX_VALUE;
@@ -188,7 +182,7 @@ public class Grid {
 	 * @return True if the word was successfully placed.
 	 */
 	private boolean attemptToPlaceWord( Word currentWord ) {
-		System.out.println( "attempting to place " + currentWord.getWordString( ) );
+		//System.out.println( "attempting to place " + currentWord.getWordString( ) );
 		boolean success = false;
 
 		if ( wordsOnGrid.isEmpty( ) ) {
@@ -224,7 +218,7 @@ public class Grid {
 	 * @return A list of all the overlaps that are suitable, represented as a WordPlacement
 	 */
 	private ArrayList< WordPlacement > findLetterMatches( String current ) {
-		System.out.println( "finding letter matches " + current );
+		//System.out.println( "finding letter matches " + current );
 		ArrayList< WordPlacement > potentialLocations = new ArrayList< WordPlacement >( );
 
 		for ( char c : current.toCharArray( ) ) {
@@ -256,7 +250,7 @@ public class Grid {
 	 * @return A list of all the valid WordPlacements that have been generated that would cause the overlap.
 	 */
 	private ArrayList< WordPlacement > generatePlacements( ArrayList< WordPlacement > potentialOverlaps, String current ) {
-		System.out.println( "generating placements " + current );
+		//System.out.println( "generating placements " + current );
 		ArrayList< WordPlacement > placements = new ArrayList< WordPlacement >( );
 
 		for ( WordPlacement potentialOverlap : potentialOverlaps ) {
@@ -297,7 +291,7 @@ public class Grid {
 	 * @return Null if invalid, otherwise the placement was determined to be valid.
 	 */
 	private WordPlacement testPlacement( String current, Orientation orientation, final int startX, final int startY ) {
-		System.out.println( "testing placements " + current );
+		//System.out.println( "testing placements " + current );
 
 		WordPlacement placement = null;
 		boolean withinBounds = isWithinBounds( orientation, startX, startY, current.length() );
@@ -413,7 +407,7 @@ public class Grid {
 	 * @return True is the dimensions are within the bounds of the grid.
 	 */
 	private boolean isWithinBounds( Orientation orientation, final int x, final int y, final int wordLength ) {
-		System.out.println( "checking bounds " );
+		//System.out.println( "checking bounds " );
 		boolean withinBounds = false;
 
 		if ( orientation == Orientation.HORIZONTAL )
@@ -431,7 +425,7 @@ public class Grid {
 	 * @return The best placement determined by number of overlaps.
 	 */
 	private WordPlacement findBestPlacement( ArrayList< WordPlacement > placements ) {
-		System.out.println( "finding best placement " );
+		//System.out.println( "finding best placement " );
 		WordPlacement bestPlacement = null;
 
 		if ( placements.size( ) > 0 ) {
@@ -449,7 +443,7 @@ public class Grid {
 	 * @param currentWord The word to write to the board.
 	 */
 	private void writeWordToGrid( Word currentWord ) {
-		System.out.println( "writing to grid " + currentWord.getWordString( ) );
+		//System.out.println( "writing to grid " + currentWord.getWordString( ) );
 		WordPlacement wordPlacement = new WordPlacement( currentWord.getWordPlacement( ) );
 		String string = currentWord.getWordString( );
 
@@ -476,7 +470,7 @@ public class Grid {
 	 * @param currentWord
 	 */
 	private void addOverlapReferences( Word currentWord ) {
-		System.out.println( "writing to overlaps " + currentWord.getWordString( ) );
+		//System.out.println( "writing to overlaps " + currentWord.getWordString( ) );
 
 		for ( Word overlappingWord : currentWord.getWordPlacement( ).getOverlaps( ) )
 			overlappingWord.getWordPlacement( ).addOverlap( currentWord );
@@ -487,7 +481,7 @@ public class Grid {
 	 * @param currentWord The word to deleted from the board.
 	 */
 	private void deleteWordFromGrid( Word currentWord ) {
-		System.out.println( "deleting from grid " + currentWord.getWordString( ) );
+		//System.out.println( "deleting from grid " + currentWord.getWordString( ) );
 		WordPlacement wordPlacement = currentWord.getWordPlacement( );
 		String w = currentWord.getWordString( );
 
@@ -511,7 +505,7 @@ public class Grid {
 	 * @param word
 	 */
 	private void removeOverlapReferences( Word word ) {
-		System.out.println( "removing overlaps for " + word.getWordString( ) );
+		//System.out.println( "removing overlaps for " + word.getWordString( ) );
 
 		for ( Word w : word.getWordPlacement( ).getOverlaps( ) )
 			w.getWordPlacement( ).removeOverlap( word );
@@ -522,7 +516,7 @@ public class Grid {
 	 * @param currentWord The first word in the WordList
 	 */
 	private void placeFirstWord( Word currentWord ) {
-		System.out.println( "Placing first word " + currentWord.getWordString( ) );
+		//System.out.println( "Placing first word " + currentWord.getWordString( ) );
 		int x = ( width / 2 );
 		int y = ( height / 2 );
 
@@ -547,7 +541,7 @@ public class Grid {
 	 * recently added word, so it will be popped off the grid.
 	 */
 	private void validateWordsOnBoard() {
-		System.out.println( "Checking all words are valid on board" );
+		//System.out.println( "Checking all words are valid on board" );
 
 		boolean keepChecking = true;
 		int index = 0;
@@ -575,7 +569,7 @@ public class Grid {
 	 * @return True is the cells are still clear, False if they are occupied.
 	 */
 	private boolean spacesBeforeAfterClear( Word word ) {
-		System.out.println( "checking spaces before and after " + word.getWordString( ) );
+		//System.out.println( "checking spaces before and after " + word.getWordString( ) );
 
 		Vector2 position = word.getWordPlacement( ).getStartPosition( );
 		Orientation orientation = word.getWordPlacement( ).getOrientation( );
