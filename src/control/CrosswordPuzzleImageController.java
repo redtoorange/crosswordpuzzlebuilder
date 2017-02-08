@@ -115,20 +115,20 @@ public class CrosswordPuzzleImageController {
 	private int writeDefinitionString( String string, int row, int initialY ) {
 		boolean heading = true;
 		Scanner stringScanner = new Scanner( string ).useDelimiter( "\n" );
+		String def;
+		int x, y;
 
 		while(stringScanner.hasNext()){
-			String n = stringScanner.next();
+			def = stringScanner.next();
+			x = buffer + (heading ? 0 : fontSize);
+			y = initialY + (row * fontSize );
 
-			answerKeyWriter.drawString( n,
-					buffer + (heading ? 0: fontSize),
-					initialY + (row * fontSize ) );
-
-			blankPuzzleWriter.drawString( n,
-					buffer + (heading ? 0: fontSize),
-					initialY + (row * fontSize ) );
+			answerKeyWriter.drawString( def, x, y );
+			blankPuzzleWriter.drawString( def, x, y );
 
 			if(heading)
 				heading = false;
+
 			row++;
 		}
 		return row;
