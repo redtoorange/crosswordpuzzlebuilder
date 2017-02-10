@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class CrosswordPuzzleImageController {
 	private static final double PAPER_WIDTH = 8.5;
 	private static final double PAPER_HEIGHT = 11;
-	private static final int PIXELS_PER_INCH = 72;
+	private static final int PIXELS_PER_INCH = 150;
 
 	private static final int IMAGE_WIDTH = (int)(PAPER_WIDTH * PIXELS_PER_INCH);
 	private static final int IMAGE_HEIGHT = (int)(PAPER_HEIGHT * PIXELS_PER_INCH);
