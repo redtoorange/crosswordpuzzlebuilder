@@ -1,7 +1,5 @@
 package model;
 
-import control.CrosswordPuzzleImageController;
-
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Random;

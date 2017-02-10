@@ -11,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.ApplicationState;
-import model.CrosswordPuzzleImage;
 import model.DictionaryFile;
 import model.Grid;
 
@@ -19,7 +18,7 @@ public class ApplicationController extends Application {
 	private DictionaryLoaderController dictionaryLoaderController;
 	private CrosswordViewController crosswordViewController;
 	private GeneratingViewController generatingViewController;
-	private CrosswordPuzzleImageController crosswordPuzzleImageController;
+	private PuzzleImageController puzzleImageController;
 
 	private Scene dictionaryScene;
 	private Scene viewerScene;
@@ -45,7 +44,7 @@ public class ApplicationController extends Application {
 		initCrosswordViewer( );
 		initGeneratingView();
 
-		crosswordPuzzleImageController = new CrosswordPuzzleImageController();
+		puzzleImageController = new PuzzleImageController();
 
 		primaryStage.setScene( dictionaryScene );
 		primaryStage.setTitle( "Crossword Generator 2K17" );
@@ -110,9 +109,9 @@ public class ApplicationController extends Application {
 		changeScene( ApplicationState.GENERATING );
 
 		puzzleGrid = new Grid( 100, 100, dictionaryFile );
-		crosswordPuzzleImageController.createPuzzleImage( puzzleGrid, 50 );
+		puzzleImageController.createPuzzleImage( puzzleGrid, 50 );
 
-		crosswordViewController.loadImage( crosswordPuzzleImageController );
+		crosswordViewController.loadImage( puzzleImageController );
 
 		changeScene( ApplicationState.IMAGE_VIEWER );
 	}
@@ -123,17 +122,17 @@ public class ApplicationController extends Application {
 		changeScene( ApplicationState.GENERATING );
 
 		puzzleGrid = new Grid( 100, 100, currentDictionaryFile );
-		crosswordPuzzleImageController.createPuzzleImage( puzzleGrid, 50 );
+		puzzleImageController.createPuzzleImage( puzzleGrid, 50 );
 
-		crosswordViewController.loadImage( crosswordPuzzleImageController );
+		crosswordViewController.loadImage( puzzleImageController );
 
 		changeScene( ApplicationState.IMAGE_VIEWER );
 	}
 
 	@Override
 	public void stop( ) throws Exception {
-		if(crosswordPuzzleImageController != null) {
-			crosswordPuzzleImageController.cleanup();
+		if( puzzleImageController != null) {
+			puzzleImageController.cleanup();
 		}
 
 		super.stop( );

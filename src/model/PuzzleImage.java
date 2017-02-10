@@ -6,19 +6,19 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * CrosswordPuzzleImage.java - DESCRIPTION
+ * PuzzleImage.java - DESCRIPTION
  *
  * @author - Andrew M.
  * @version - 04/Feb/2017
  */
-public class CrosswordPuzzleImage {
+public class PuzzleImage {
 	private BufferedImage blankImage;
 	private BufferedImage answeredImage;
 
 	private File blankImageFile = new File( "blank_temp.png"  );
 	private File answeredImageFile = new File( "filled_temp.png" );
 
-	public CrosswordPuzzleImage( BufferedImage blankImage, BufferedImage answeredImage ){
+	public PuzzleImage( BufferedImage blankImage, BufferedImage answeredImage ){
 		this.blankImage = blankImage;
 		this.answeredImage = answeredImage;
 	}
@@ -57,5 +57,12 @@ public class CrosswordPuzzleImage {
 
 	public void setAnsweredImage( BufferedImage answeredImage ) {
 		this.answeredImage = answeredImage;
+	}
+
+	public void cleanup(){
+		if( blankImageFile.exists() )
+			blankImageFile.delete();
+		if( answeredImageFile.exists() )
+			answeredImageFile.delete();
 	}
 }

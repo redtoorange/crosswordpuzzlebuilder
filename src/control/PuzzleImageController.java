@@ -12,7 +12,7 @@ import java.util.Scanner;
  * @author
  * @version 08/Feb/2017
  */
-public class CrosswordPuzzleImageController {
+public class PuzzleImageController {
 	private static final double PAPER_WIDTH = 8.5;
 	private static final double PAPER_HEIGHT = 11;
 	private static final int PIXELS_PER_INCH = 150;
@@ -31,17 +31,20 @@ public class CrosswordPuzzleImageController {
 	private Graphics2D answerKeyWriter = null;
 	private Graphics2D blankPuzzleWriter = null;
 
-
-	private CrosswordPuzzleImage puzzleImage;
+	private PuzzleImage puzzleImage;
 
 	public void createPuzzleImage( Grid grid, int buffer ){
 		GridCell[][] letterGrid = grid.getLetterGrid();
 
 		setDimensions( grid, buffer );
 
+		if(puzzleImage != null )
+			puzzleImage.cleanup();
+
 		BufferedImage blankImage = new BufferedImage( IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB );
 		BufferedImage answeredImage = new BufferedImage( IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB );
-		puzzleImage = new CrosswordPuzzleImage( blankImage, answeredImage );
+
+		puzzleImage = new PuzzleImage( blankImage, answeredImage );
 
 		answerKeyWriter = initGraphics( answeredImage );
 		blankPuzzleWriter = initGraphics( blankImage );
@@ -51,6 +54,9 @@ public class CrosswordPuzzleImageController {
 		writeWordNumbers( grid );
 
 		puzzleImage.storeTempFiles();
+
+		answerKeyWriter = null;
+		blankPuzzleWriter = null;
 	}
 
 	private void setDimensions( Grid grid, int buffer ) {
@@ -195,7 +201,7 @@ public class CrosswordPuzzleImageController {
 		}
 	}
 
-	public CrosswordPuzzleImage getPuzzleImage( ) {
+	public PuzzleImage getPuzzleImage( ) {
 		return puzzleImage;
 	}
 }

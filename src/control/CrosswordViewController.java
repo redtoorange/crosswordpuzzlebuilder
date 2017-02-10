@@ -1,6 +1,5 @@
 package control;
 
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -9,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import model.ApplicationState;
-import model.CrosswordPuzzleImage;
+import model.PuzzleImage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -23,12 +22,13 @@ import java.io.IOException;
  */
 public class CrosswordViewController {
 	private ApplicationController applicationController;
-	private CrosswordPuzzleImage puzzleImage;
+	private PuzzleImage puzzleImage;
 
 	@FXML private Parent root;
 	@FXML private Button regenerateButton;
 	@FXML private Button saveButton;
 	@FXML private Button newDictionaryButton;
+
 	@FXML private ImageView answeredImage;
 	@FXML private ImageView blankImage;
 
@@ -73,7 +73,7 @@ public class CrosswordViewController {
 		this.applicationController = loader;
 	}
 
-	public void loadImage( CrosswordPuzzleImageController imageController ){
+	public void loadImage( PuzzleImageController imageController ){
 		this.puzzleImage = imageController.getPuzzleImage();
 
 		try {
