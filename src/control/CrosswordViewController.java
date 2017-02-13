@@ -20,6 +20,7 @@ import java.io.IOException;
  * @author - Andrew M.
  * @version - 04/Feb/2017
  */
+//TODO: Fix Comments
 public class CrosswordViewController {
 	private ApplicationController applicationController;
 	private PuzzleImage puzzleImage;
@@ -49,10 +50,10 @@ public class CrosswordViewController {
 		}
 
 		fileChooser.setTitle("Save Blank Puzzle To...");
-		File blankPuzzleLocatopn = fileChooser.showSaveDialog( null );
-		if (blankPuzzleLocatopn != null) {
+		File blankPuzzleLocation = fileChooser.showSaveDialog( null );
+		if (blankPuzzleLocation != null) {
 			try {
-				ImageIO.write( puzzleImage.getBlankImage(), "png", blankPuzzleLocatopn );
+				ImageIO.write( puzzleImage.getBlankImage(), "png", blankPuzzleLocation );
 			} catch (IOException ex) {
 				System.out.println(ex.getMessage());
 			}
@@ -61,7 +62,7 @@ public class CrosswordViewController {
 
 	@FXML public void regenerateButtonClicked( ActionEvent event){
 		System.out.println( "Regenerate Button Clicked" );
-		applicationController.regenerateCrossword();
+		applicationController.generateCrossword();
 	}
 
 	@FXML public void newDictionaryButtonClicked( ActionEvent event){
@@ -73,8 +74,8 @@ public class CrosswordViewController {
 		this.applicationController = loader;
 	}
 
-	public void loadImage( PuzzleImageController imageController ){
-		this.puzzleImage = imageController.getPuzzleImage();
+	public void loadImage( PuzzleImage puzzleImage ){
+		this.puzzleImage = puzzleImage;
 
 		try {
 			answeredImage.setImage( new Image( "file:" + puzzleImage.getAnsweredImageFile().getPath() ) );

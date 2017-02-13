@@ -9,6 +9,7 @@ import java.util.Collections;
  * @author - Andrew M.
  * @version - 04/Feb/2017
  */
+//TODO: Fix Comments
 public class WordList {
 	private ArrayList<Word> wordArrList;
 

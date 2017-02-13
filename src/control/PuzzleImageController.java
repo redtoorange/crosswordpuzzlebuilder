@@ -7,11 +7,13 @@ import java.awt.image.BufferedImage;
 import java.util.Scanner;
 
 /**
- * ${FILE_NAME}.java - Description
+ * PuzzleImageController.java - The Controller that can build other PuzzleImages.  It is set to represent a puzzle
+ * using the standard U.S. Paper size of 8.5x11 with a resolution of 150 pixels-per-inch
  *
- * @author
+ * @author Andrew McGuiness
  * @version 08/Feb/2017
  */
+//TODO: Fix Comments
 public class PuzzleImageController {
 	private static final double PAPER_WIDTH = 8.5;
 	private static final double PAPER_HEIGHT = 11;
@@ -31,34 +33,38 @@ public class PuzzleImageController {
 	private Graphics2D answerKeyWriter = null;
 	private Graphics2D blankPuzzleWriter = null;
 
-	private PuzzleImage puzzleImage;
-
-	public void createPuzzleImage( Grid grid, int buffer ){
-		GridCell[][] letterGrid = grid.getLetterGrid();
-
+	/**
+	 *
+	 * @param grid
+	 * @param buffer
+	 */
+	public PuzzleImage createPuzzleImage( Grid grid, int buffer ){
 		setDimensions( grid, buffer );
-
-		if(puzzleImage != null )
-			puzzleImage.cleanup();
 
 		BufferedImage blankImage = new BufferedImage( IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB );
 		BufferedImage answeredImage = new BufferedImage( IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB );
 
-		puzzleImage = new PuzzleImage( blankImage, answeredImage );
+		PuzzleImage puzzleImage = new PuzzleImage( blankImage, answeredImage );
 
-		answerKeyWriter = initGraphics( answeredImage );
-		blankPuzzleWriter = initGraphics( blankImage );
+		answerKeyWriter = createGraphics2dWriter( answeredImage );
+		blankPuzzleWriter = createGraphics2dWriter( blankImage );
 
 
-		buildGrid( grid, letterGrid );
-		writeWordNumbers( grid );
+		buildGrid( grid.getLetterGrid() );
+		writeWordNumbersOnGrid( grid );
 
 		puzzleImage.storeTempFiles();
 
 		answerKeyWriter = null;
 		blankPuzzleWriter = null;
+		return puzzleImage;
 	}
 
+	/**
+	 *	Prepare the state of the Object to create the correctly sized Image based on the input grid.
+	 * @param grid The Grid that the image will be based on.
+	 * @param buffer How much of a buffer that should be used when building the image.
+	 */
 	private void setDimensions( Grid grid, int buffer ) {
 		this.buffer = buffer;
 		width = (IMAGE_WIDTH - buffer ) / grid.getWidth();
@@ -71,8 +77,13 @@ public class PuzzleImageController {
 		fontSize = cellSize;
 	}
 
-	private void writeWordNumbers( Grid grid ) {
-		resetGraphics2D( );
+	/**
+	 * Write the word numbers on the Grid and then Write the corresponding definitions under the grid.
+	 * @param grid The Grid object's WordList and the WordPlacements of those words will be used to correctly
+	 *             write the definitions.
+	 */
+	private void writeWordNumbersOnGrid( Grid grid ) {
+		resetGraphics2DWriters( );
 
 		String vertical = "Down: \n";
 		String horizontals = "Across: \n";
@@ -86,39 +97,56 @@ public class PuzzleImageController {
 
 			if(w.getWordPlacement().getOrientation() == Orientation.HORIZONTAL)
 				horizontals += "\t" + wordNumber + " : " + w.getDefinitionString() + "\n";
-			else{
+			else
 				vertical += "\t" + wordNumber + " : " + w.getDefinitionString() + "\n";
-			}
 
 			wordNumber++;
 		}
 
-		writeDefintions( grid, vertical, horizontals, wordNumber );
+		writeDefinitionsUnderGrid( grid, vertical, horizontals, wordNumber );
 	}
 
-	private void resetGraphics2D( ) {
+	/**
+	 *
+	 * @param grid
+	 * @param vertical
+	 * @param horizontals
+	 * @param wordNumber
+	 */
+	private void writeDefinitionsUnderGrid( Grid grid, String vertical, String horizontals, int wordNumber ) {
+		fontSize = (int)(IMAGE_HEIGHT * .35) / (wordNumber + 4);
+
+		answerKeyWriter.setFont( new Font("TimesRoman", Font.PLAIN, fontSize ) );
+		blankPuzzleWriter.setFont( new Font("TimesRoman", Font.PLAIN, fontSize ) );
+
+		int row = 1;
+		int initialY = grid.getHeight() * cellSize + yOffset + fontSize;
+
+		row = writeStringOfDefinitions( vertical, row, initialY );
+		row++;
+		writeStringOfDefinitions( horizontals, row, initialY );
+	}
+
+	/**
+	 *	Reset the two Graphics2D objects to write the definitions under the grid.
+	 */
+	private void resetGraphics2DWriters( ) {
 		answerKeyWriter.setFont( new Font("TimesRoman", Font.BOLD, (int)(cellSize * .75) ) );
 		blankPuzzleWriter.setFont( new Font("TimesRoman", Font.BOLD, (int)(cellSize * .75) ) );
 		answerKeyWriter.setColor( Color.BLACK );
 		blankPuzzleWriter.setColor( Color.BLACK );
 	}
 
-	private void writeDefintions( Grid grid, String vertical, String horizontals, int wordNumber ) {
-		fontSize = (int)(IMAGE_HEIGHT * .35) / (wordNumber + 4);
-
-		answerKeyWriter.setFont( new Font("TimesRoman", Font.PLAIN, fontSize ) );
-		blankPuzzleWriter.setFont( new Font("TimesRoman", Font.PLAIN, fontSize ) );
 
 
-		int row = 1;
-		int initialY = grid.getHeight() * cellSize + yOffset + fontSize;
-
-		row = writeDefinitionString( vertical, row, initialY );
-		row++;
-		writeDefinitionString( horizontals, row, initialY );
-	}
-
-	private int writeDefinitionString( String string, int row, int initialY ) {
+	/**
+	 *
+	 * @param string
+	 * @param row
+	 * @param initialY
+	 * @return
+	 */
+	private int writeStringOfDefinitions( String string, int row, int initialY ) {
 		boolean heading = true;
 		Scanner stringScanner = new Scanner( string ).useDelimiter( "\n" );
 		String def;
@@ -140,68 +168,73 @@ public class PuzzleImageController {
 		return row;
 	}
 
-	private void buildGrid( Grid grid, GridCell[][] letterGrid ) {
-		for(int x = 0; x < grid.getWidth(); x++){
-			for(int y = 0; y < grid.getHeight(); y++){
-				if( letterGrid[x][y] != null){
-					if( letterGrid[x][y].getCharacter(  ) == 0 ){
-						answerKeyWriter.setColor( Color.black );
-						answerKeyWriter.fillRect( 	x * cellSize + xOffset,
-								y * cellSize + yOffset,
-								cellSize, cellSize );
+	/**
+	 *	Build the grid itself out of a 2D array of GridCell's.  Both BufferedImages will be written to.  One with just
+	 *	the boxes, and the other with the boxes and letters.
+	 * @param letterGrid The 2D array of GridCell's that this PuzzleImage is being built from.
+	 */
+	private void buildGrid( GridCell[][] letterGrid ) {
+		for(int x = 0; x < letterGrid.length; x++){
+			for(int y = 0; y < letterGrid[x].length; y++){
+				if( letterGrid[x][y] != null && letterGrid[x][y].getCharacter(  ) != 0){
+					answerKeyWriter.setColor( Color.red );
+					answerKeyWriter.drawString( "" + letterGrid[x][y].getCharacter(),  x * cellSize + xOffset + (cellSize/4),y * cellSize + yOffset + (int)(cellSize * 0.85)  );
 
-						blankPuzzleWriter.setColor( Color.black );
-						blankPuzzleWriter.fillRect( 	x * cellSize + xOffset,
-								y * cellSize + yOffset,
-								cellSize, cellSize );
-					}
-					else {
-						answerKeyWriter.setColor( Color.black );
-						answerKeyWriter.drawRect( x * cellSize + xOffset,
-								y * cellSize + yOffset,
-								cellSize, cellSize );
-						answerKeyWriter.setColor( Color.red );
-						answerKeyWriter.drawString( "" + letterGrid[x][y].getCharacter(),  x * cellSize + xOffset + (cellSize/4),y * cellSize + yOffset + (int)(cellSize * 0.85)  );
-
-						blankPuzzleWriter.setColor( Color.black );
-						blankPuzzleWriter.drawRect( x * cellSize + xOffset,
-								y * cellSize + yOffset,
-								cellSize, cellSize );
-					}
+					drawHollowRect(x, y, Color.black);
 				}
-				else{
-					answerKeyWriter.setColor( Color.black );
-					answerKeyWriter.fillRect( 	x * cellSize + xOffset,
-							y * cellSize + yOffset,
-							cellSize, cellSize );
-
-					blankPuzzleWriter.setColor( Color.black );
-					blankPuzzleWriter.fillRect( 	x * cellSize + xOffset,
-							y * cellSize + yOffset,
-							cellSize, cellSize );
+				else if( letterGrid[x][y] == null || letterGrid[x][y].getCharacter(  ) == 0){
+					drawFilledRect( x, y, Color.black );
 				}
 			}
 		}
 	}
 
-	private Graphics2D initGraphics( BufferedImage img ) {
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @param color
+	 */
+	private void drawFilledRect( int x, int y, Color color ) {
+		answerKeyWriter.setColor(color);
+		answerKeyWriter.fillRect( 	x * cellSize + xOffset,
+				y * cellSize + yOffset,
+				cellSize, cellSize );
+
+		blankPuzzleWriter.setColor( color );
+		blankPuzzleWriter.fillRect( 	x * cellSize + xOffset,
+				y * cellSize + yOffset,
+				cellSize, cellSize );
+	}
+
+	/**
+	 *
+	 * @param x
+	 * @param y
+	 * @param color
+	 */
+	private void drawHollowRect( int x, int y, Color color ) {
+		answerKeyWriter.setColor(color);
+		answerKeyWriter.drawRect( 	x * cellSize + xOffset,
+				y * cellSize + yOffset,
+				cellSize, cellSize );
+
+		blankPuzzleWriter.setColor( color );
+		blankPuzzleWriter.drawRect( 	x * cellSize + xOffset,
+				y * cellSize + yOffset,
+				cellSize, cellSize );
+	}
+
+	/**
+	 * Create a Graphics2D object to work correctly with the BufferedImage.
+	 * @param img The BufferedImage that this Graphics2D object will be writing to.
+	 * @return The initialized Graphics2D object.
+	 */
+	private Graphics2D createGraphics2dWriter( BufferedImage img ) {
 		Graphics2D g2d = img.createGraphics();
 		g2d.setColor( Color.white );
 		g2d.fillRect( 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT );
 		g2d.setFont( new Font( "TimesRoman", Font.PLAIN, fontSize ) );
 		return g2d;
-	}
-
-	public void cleanup(){
-		if(puzzleImage != null){
-			if(puzzleImage.getAnsweredImageFile( ) != null)
-				puzzleImage.getAnsweredImageFile( ).delete( );
-			if(puzzleImage.getBlankImageFile( ) != null)
-				puzzleImage.getBlankImageFile( ).delete( );
-		}
-	}
-
-	public PuzzleImage getPuzzleImage( ) {
-		return puzzleImage;
 	}
 }

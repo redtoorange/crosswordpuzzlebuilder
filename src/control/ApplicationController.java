@@ -1,10 +1,5 @@
 package control;
-/**
- * ${FILE_NAME}.java - Description
- *
- * @author
- * @version 27/Jan/2017
- */
+
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,44 +9,58 @@ import model.ApplicationState;
 import model.DictionaryFile;
 import model.Grid;
 
+/**
+ * ApplicationController.java - Main Controller class for the JavaFX Application.  Controls scene switching and message
+ * passing between Primary Controllers.
+ *
+ * @author Andrew J. McGuiness
+ * @version 27/Jan/2017
+ */
 public class ApplicationController extends Application {
+	//Primary Controllers
 	private DictionaryLoaderController dictionaryLoaderController;
 	private CrosswordViewController crosswordViewController;
-	private GeneratingViewController generatingViewController;
+	private GridController gridController;
 	private PuzzleImageController puzzleImageController;
 
+	//Scene references
 	private Scene dictionaryScene;
 	private Scene viewerScene;
 
-	private Scene generatingScene;
-	private Stage generatingStage;
-
+	//primaryStage passed in by JavaFX
 	private Stage mainStage;
+
 	private DictionaryFile currentDictionaryFile;
 
-	//private CrosswordPuzzleImage currentCrosswordPuzzleImage;
-	private Grid puzzleGrid;
 
 	public static void main( String[] args ) {
 		launch( args );
 	}
 
+	/**
+	 * Called by the system to Start the application.  This will initialize the view and contoller references.  It then
+	 * changes the view to the DictionaryLoaderView, which is the default.
+	 * @param primaryStage
+	 * @throws Exception
+	 */
 	@Override
 	public void start( Stage primaryStage ) throws Exception {
 		mainStage = primaryStage;
 
 		initDictionaryLoader( );
 		initCrosswordViewer( );
-		initGeneratingView();
 
 		puzzleImageController = new PuzzleImageController();
+		gridController = new GridController();
 
-		primaryStage.setScene( dictionaryScene );
 		primaryStage.setTitle( "Crossword Generator 2K17" );
-
 		changeScene( ApplicationState.DICTIONARY_LOADER );
 	}
 
+	/**
+	 * Intialize the DictionaryLoaderView and it's controller reference
+	 * @throws java.io.IOException
+	 */
 	private void initDictionaryLoader() throws java.io.IOException {
 		FXMLLoader dictionay = new FXMLLoader( getClass().getResource("../view/DictionaryLoader.fxml") );
 		dictionaryScene = new Scene( dictionay.load() );
@@ -60,6 +69,10 @@ public class ApplicationController extends Application {
 		dictionaryLoaderController.init( this );
 	}
 
+	/**
+	 * Initialize the CrosswordView and it's controller reference
+	 * @throws java.io.IOException
+	 */
 	private void initCrosswordViewer() throws java.io.IOException {
 		FXMLLoader viewer = new FXMLLoader( getClass().getResource( "../view/CrosswordView.fxml" ) );
 		viewerScene = new Scene( viewer.load() );
@@ -68,73 +81,45 @@ public class ApplicationController extends Application {
 		crosswordViewController.init( this );
 	}
 
-	private void initGeneratingView() throws java.io.IOException {
-		FXMLLoader generating = new FXMLLoader( getClass().getResource( "../view/GeneratingView.fxml" ) );
-		generatingScene = new Scene( generating.load() );
 
-		generatingViewController = generating.getController();
-		generatingViewController.init( this );
-
-		generatingStage = new Stage( );
-		generatingStage.setScene( generatingScene );
-		generatingStage.sizeToScene();
-	}
-
+	/**
+	 * A method used by the ViewControllers to switch that view of the application.
+	 * @param applicationState What state to switch the Application to.
+	 */
 	public void changeScene( ApplicationState applicationState ){
+		mainStage.hide();
+
 		switch( applicationState){
 			case IMAGE_VIEWER:
-				generatingStage.hide();
 				mainStage.setScene( viewerScene );
-				mainStage.sizeToScene();
-				mainStage.show();
-				break;
-			case GENERATING:
-				mainStage.hide();
-				//TODO: implement a better generating screen.
-				//generatingStage.show();
-				//generatingViewController.show();
 				break;
 			case DICTIONARY_LOADER:default:
-				generatingStage.hide();
 				mainStage.setScene( dictionaryScene );
-				mainStage.show();
-				mainStage.sizeToScene();
 				break;
 		}
+
+		mainStage.sizeToScene();
+		mainStage.show();
 	}
 
+	/**
+	 * Method to generate a new Crossword and display it using the CrosswordImageView
+	 * @param dictionaryFile The DictionaryFile that should be used in the Crossword Generation
+	 */
 	public void generateCrossword( DictionaryFile dictionaryFile ){
 		this.currentDictionaryFile = dictionaryFile;
-
-		changeScene( ApplicationState.GENERATING );
-
-		puzzleGrid = new Grid( 100, 100, dictionaryFile );
-		puzzleImageController.createPuzzleImage( puzzleGrid, 50 );
-
-		crosswordViewController.loadImage( puzzleImageController );
-
-		changeScene( ApplicationState.IMAGE_VIEWER );
+		generateCrossword();
 	}
 
-	public void regenerateCrossword(){
+	/**
+	 * Method to generate a new Crossword and display it using the CrosswordImageView
+	 */
+	public void generateCrossword(){
 		currentDictionaryFile.reset();
 
-		changeScene( ApplicationState.GENERATING );
+		Grid grid = gridController.createGrid( currentDictionaryFile );
 
-		puzzleGrid = new Grid( 100, 100, currentDictionaryFile );
-		puzzleImageController.createPuzzleImage( puzzleGrid, 50 );
-
-		crosswordViewController.loadImage( puzzleImageController );
-
+		crosswordViewController.loadImage( puzzleImageController.createPuzzleImage( grid, 50 ) );
 		changeScene( ApplicationState.IMAGE_VIEWER );
-	}
-
-	@Override
-	public void stop( ) throws Exception {
-		if( puzzleImageController != null) {
-			puzzleImageController.cleanup();
-		}
-
-		super.stop( );
 	}
 }

@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
  * @author Andrew McGuiness
  * @version 27/Jan/2017
  */
+//TODO: Fix Comments
 public class DictionaryLoaderController {
 	private final String FILE_CHOOSER_TITLE = "Selected a Dictionary File" ;
 	private final String FILTER_DESCRIPTION = "Text File" ;

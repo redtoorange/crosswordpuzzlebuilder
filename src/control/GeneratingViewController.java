@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
  * @author
  * @version 08/Feb/2017
  */
+//TODO: Fix Comments
 public class GeneratingViewController {
 	private ApplicationController controller;
 	@FXML private Pane root;

@@ -1,9 +1,10 @@
 package model;
 
 /**
- * Vector2.java - A representation of a 2D positon on a grid.
+ * Vector2.java - A representation of a 2D positon on a grid.  This is mostly a helper data representation to
+ * better organize words on an Abstract grid.  Just an easy way to encapsulate an x, y position.
  *
- * @author - Andrew M.
+ * @author - Andrew McGuiness
  * @version - 04/Feb/2017
  */
 public class Vector2 {

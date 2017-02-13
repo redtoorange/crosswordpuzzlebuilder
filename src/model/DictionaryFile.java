@@ -11,6 +11,7 @@ import java.util.Scanner;
  * @author Andrew McGuiness
  * @version 25/Jan/2017
  */
+//TODO: Fix Comments
 public class DictionaryFile {
 	/**
 	 * A reference to the file on disk.

@@ -7,6 +7,7 @@ package model;
  * @author - Andrew M.
  * @version - 04/Feb/2017
  */
+//TODO: Fix Comments
 public class Word implements Comparable {
 	private String word;
 	private String definition;

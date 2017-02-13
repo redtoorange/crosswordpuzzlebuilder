@@ -8,6 +8,7 @@ import java.io.File;
  * @author - Andrew M.
  * @version - 04/Feb/2017
  */
+//TODO: Fix Comments
 public class FileValidator {
 	public static boolean valid( File file ){
 		boolean validFile = true;
