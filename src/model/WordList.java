@@ -4,42 +4,55 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * WordList.java - A custom type of collection that will encapsulate the list of word-definition pairs from a DictionaryFile.
+ * WordList.java - A custom collection that is backed by an ArrayList.  Encapsulates the list of word-definition pairs
+ * from a DictionaryFile.  This simplifies interaction between the controllers and the DictionaryFile.
  *
- * @author - Andrew M.
- * @version - 04/Feb/2017
+ * @author - Andrew McGuiness
+ * @version - 14/Feb/2017
  */
-//TODO: Fix Comments
 public class WordList {
-	private ArrayList<Word> wordArrList;
+	/**
+	 * An {@link ArrayList}<{@link Word}> that contains all the words from a {@link DictionaryFile}.
+	 */
+	private ArrayList< Word > wordsArrayList;
 
-	public WordList( ){
-		this( new ArrayList<Word>() );
-	}
-
-	public WordList(ArrayList<Word> wordArrList){
-		this.wordArrList = wordArrList;
+	/**
+	 * Create a new {@link WordList} with no {@link Word}s.
+	 */
+	public WordList() {
+		this( new ArrayList< Word >( ) );
 	}
 
 	/**
-	 * Add the given word to the ArrayList.
-	 * @param word word to be added to the ArrayList.
+	 * Create a new {@link WordList} with a starting {@link ArrayList}<{@link Word}> that is passed in.
+	 *
+	 * @param wordsArrayList The initial {@link ArrayList}<{@link Word}> to use.
 	 */
-	public void addWord( Word word ){
-		wordArrList.add( word );
+	public WordList( ArrayList< Word > wordsArrayList ) {
+		this.wordsArrayList = wordsArrayList;
 	}
 
 	/**
-	 * Return the next word in the ArrayList that has it's isPlaced flag set to false.
-	 * @return the next word in the ArrayList that hasn't been placed.
+	 * Add the given {@link Word} to the {@link WordList}.
+	 *
+	 * @param word {@link Word} to be added to the {@link WordList}.
 	 */
-	public Word getNextUnplaced(){
+	public void addWord( Word word ) {
+		wordsArrayList.add( word );
+	}
+
+	/**
+	 * Return the next {@link Word} in the {@link WordList} that has it's placement flag set to false.
+	 *
+	 * @return Next {@link Word} in the {@link WordList} that hasn't been placed.
+	 */
+	public Word getNextUnplaced() {
 		Word unplaced = null;
 
 		int index = 0;
-		while(unplaced == null && index < wordArrList.size()){
-			if( !wordArrList.get( index ).isWrittenOnGrid() )
-				unplaced = wordArrList.get( index );
+		while ( unplaced == null && index < wordsArrayList.size( ) ) {
+			if ( !wordsArrayList.get( index ).isWrittenOnGrid( ) )
+				unplaced = wordsArrayList.get( index );
 			else
 				index++;
 		}
@@ -48,51 +61,54 @@ public class WordList {
 	}
 
 	/**
-	 * How many words are currently inside the WordList.
-	 * @return the int size of the list.
+	 * How many {@link Word}s are currently inside this {@link WordList}.
+	 *
+	 * @return Length of the {@link WordList}.
 	 */
-	public int listSize(){
-		return wordArrList.size();
+	public int listSize() {
+		return wordsArrayList.size( );
 	}
 
 	/**
-	 * Reset each word.  Nullifies it's placement and resets it's isPlaced flag to false.
+	 * Reset each {@link Word}. This Nullifies it's {@link WordPlacement} and resets it's placed flag to false.
 	 */
-	public void reset(){
-		for(Word w : wordArrList)
-			w.reset();
+	public void reset() {
+		for ( Word w : wordsArrayList )
+			w.reset( );
 	}
 
 	/**
-	 * Shuffle the WordList.  This allows for more randomness when generating new grids.
+	 * Shuffle the {@link WordList}.  This allows for more randomness when generating new {@link Grid}s.
 	 */
-	public void shuffle(){
-		Collections.shuffle( wordArrList );
+	public void shuffle() {
+		Collections.shuffle( wordsArrayList );
 	}
 
 	/**
-	 * Print each word inside the WordList using the word's toString method.
-	 * @return A String containing all the word-definition pairs inside the WordList.  Each word on a new line.
+	 * Print each {@link Word} in this {@link WordList} using the {@link Word}'s toString method.
+	 *
+	 * @return A {@link String} containing all the word-definition pairs in this {@link WordList}.  Each word on a new line.
 	 */
 	@Override
 	public String toString() {
 		String string = "";
 
-		for( Word w : wordArrList )
+		for ( Word w : wordsArrayList )
 			string += w;
 
 		return string;
 	}
 
 	/**
-	 * Push the indicated word to the back of the ArrayList,  this will effectively make it the last word in line
-	 * to be placed on the board
-	 * @param word Which word to push to the back.
+	 * Push the indicated {@link Word} to the back of the {@link WordList},  this will effectively make it the last word in line
+	 * to be placed on the {@link Grid}.  Used if a word is unable to find a suitable {@link WordPlacement} based on the current {@link Grid}.
+	 *
+	 * @param word Which {@link Word} to push to the back.
 	 */
-	public void pushToBack( Word word ){
-		wordArrList.remove( word );
-		word.reset();
-		wordArrList.add( word );
+	public void pushToBack( Word word ) {
+		wordsArrayList.remove( word );
+		word.reset( );
+		wordsArrayList.add( word );
 	}
 
 }

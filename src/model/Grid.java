@@ -3,26 +3,45 @@ package model;
 import java.util.ArrayList;
 
 /**
- * Grid.java - This class represents a Grid of letters.  It can take in a DictionaryFile and build the
- * grid.
+ * Grid.java - Represents a {@link Grid} of {@link GridCell}s, each one containing a letter.  The {@link Grid} maintains an
+ * {@link ArrayList} of {@link Word}s that are currently on it.  This is a purely model class, that must be created using
+ * a {@link control.GridController}.
  *
  * @author - Andrew McGuiness
- * @version - 04/Feb/2017
+ * @version - 14/Feb/2017
+ * @see control.GridController
+ * @see GridCell
+ * @see Word
  */
 public class Grid {
+	/**
+	 * Int representing the number of columns in the {@link Grid}.
+	 */
 	private int width;
+	/**
+	 * Int representing the number of rows in the {@link Grid}.
+	 */
 	private int height;
+
+	/**
+	 * Two dimensional array of {@link GridCell}s.
+	 */
 	private GridCell[][] letterGrid;
+	/**
+	 * All of the {@link Word}s that are on this {@link Grid}.  These are maintained to prevent GC of the {@link Word}s
+	 * if the {@link DictionaryFile} that contains them is ever deleted.
+	 */
 	private ArrayList< Word > wordsOnGrid;
 
 	/**
-	 * Initialize a grid based on a what the GridController feeds in.
-	 * @param width The final cell count width of the grid after generation
-	 * @param height The final cell count height of the grid after generation
-	 * @param letterGrid The 2D array of GridCells that this grid is based on.
-	 * @param wordsOnGrid The List of all words on this grid.
+	 * Initialize a {@link Grid} on a what the {@link control.GridController} feeds in.
+	 *
+	 * @param width       The final cell count width of the {@link Grid} after generation by the {@link control.GridController}.
+	 * @param height      The final cell count height of the {@link Grid} after generation by the {@link control.GridController}.
+	 * @param letterGrid  The 2D array of {@link GridCell}s that this {@link Grid} is based on.
+	 * @param wordsOnGrid The {@link ArrayList} of all {@link Word}s on this {@link Grid}.
 	 */
-	public Grid( int width, int height,  GridCell[][] letterGrid, ArrayList< Word > wordsOnGrid) {
+	public Grid( int width, int height, GridCell[][] letterGrid, ArrayList< Word > wordsOnGrid ) {
 		this.width = width;
 		this.height = height;
 
@@ -31,32 +50,36 @@ public class Grid {
 	}
 
 	/**
-	 * Get the current grid width.
-	 * @return grid width
+	 * Get the current {@link Grid} width.
+	 *
+	 * @return Int {@link Grid} width in columns.
 	 */
 	public int getWidth() {
 		return width;
 	}
 
 	/**
-	 * Get the current grid height.
-	 * @return grid height.
+	 * Get the current {@link Grid} height.
+	 *
+	 * @return Int {@link Grid} height in rows.
 	 */
 	public int getHeight() {
 		return height;
 	}
 
 	/**
-	 * Get the 2D array of GridCells.
-	 * @return 2D array of object references.
+	 * Get the 2D array of {@link GridCell}s.
+	 *
+	 * @return 2D array of {@link GridCell} references.
 	 */
 	public GridCell[][] getLetterGrid() {
 		return letterGrid;
 	}
 
 	/**
-	 * Get a list of all the words on the Grid.
-	 * @return ArrayList containing all the words on the grid.
+	 * Get the {@link ArrayList} of all the {@link Word}s on this {@link Grid}.
+	 *
+	 * @return {@link ArrayList} containing all the {@link Word}s on the {@link Grid}.
 	 */
 	public ArrayList< Word > getWordsOnGrid() {
 		return wordsOnGrid;

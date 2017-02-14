@@ -1,77 +1,110 @@
 package model;
 
 /**
- * Word.java - A model of a word.  Contains the definition, the word and it's eventual placement.  Has a flag for the words
- * placement.
+ * Word.java - A model of a word.  Contains the {@link String} definition, the {@link String} word and it's {@link WordPlacement}.
  *
- * @author - Andrew M.
- * @version - 04/Feb/2017
+ * @author - Andrew McGuiness
+ * @version - 14/Feb/2017
  */
-//TODO: Fix Comments
 public class Word implements Comparable {
-	private String word;
-	private String definition;
+	/**
+	 * Immutable. The {@link String} that this word represents.  Loaded from a {@link DictionaryFile} during construction.
+	 */
+	private final String word;
 
-	private WordPlacement wordPlacement;
+	/**
+	 * Immutable. The {@link String} definition for this word.  Loaded from a {@link DictionaryFile} during construction.
+	 */
+	private final String definition;
+
+	/**
+	 * The {@link WordPlacement} of a word on the {@link Grid}.  It is only set by the {@link control.GridController}.
+	 */
+	private WordPlacement wordPlacement = null;
+
+	/**
+	 * Flag used by the {@link control.GridController}. to determine if a {@link Word} is currently written on a {@link Grid}.
+	 */
 	private boolean writtenOnGrid = false;
 
-	public Word( String word, String definition ){
+	/**
+	 * Constructor that sets the Word's word and definition, they are immutable.
+	 *
+	 * @param word       A word loaded from a {@link DictionaryFile} that this Word object represents.
+	 * @param definition A definition loaded from a {@link DictionaryFile} that is related to this Word's word.
+	 */
+	public Word( String word, String definition ) {
 		this.word = word;
 		this.definition = definition;
 	}
 
 	/**
-	 * Get the String that was given in the original DictionaryFile.
-	 * @return the String word that was inside the dictionary file
+	 * Get the {@link String} that was given in the original {@link DictionaryFile}.
+	 *
+	 * @return {@link String} word that was inside the {@link DictionaryFile}.
 	 */
-	public String getWordString(){
+	public String getWordString() {
 		return word;
 	}
 
 	/**
-	 * Get the word's definition as it was written in the original DictionaryFile.
-	 * @return the String definition that was inside the dictionary file
+	 * Get the word's {@link String} definition as it was written in the {@link DictionaryFile}.
+	 *
+	 * @return {@link String} definition that was inside the {@link DictionaryFile}.
 	 */
-	public String getDefinitionString(){
+	public String getDefinitionString() {
 		return definition;
 	}
 
 	/**
-	 * Get the flag to determine if this word has already been written.
-	 * @return a flag that represents if the word is currently written to the board
+	 * Has this {@link Word} already been written to a {@link Grid} by the {@link control.GridController}.
+	 *
+	 * @return Flag that represents if the word is currently written to the {@link Grid}.
 	 */
-	public boolean isWrittenOnGrid(){
+	public boolean isWrittenOnGrid() {
 		return writtenOnGrid;
 	}
 
 	/**
-	 * Set the flag that says if this word is already on the board.
-	 * @param writtenOnGrid a flag that represents if the word is currently written to the board
+	 * Set that this {@link Word} has been written to a {@link Grid} by the {@link control.GridController}.
+	 *
+	 * @param writtenOnGrid Flag that represents if the word is currently written to the {@link Grid}.
 	 */
-	public void setWrittenOnGrid( boolean writtenOnGrid ){
+	public void setWrittenOnGrid( boolean writtenOnGrid ) {
 		this.writtenOnGrid = writtenOnGrid;
 	}
 
 
 	/**
-	 * Get the word's placement on the board.
-	 * @return the placement of the word.
+	 * Get the word's {@link WordPlacement} on the {@link Grid}.
+	 *
+	 * @return {@link WordPlacement} of the word.
 	 */
 	public WordPlacement getWordPlacement() {
 		return wordPlacement;
 	}
 
 	/**
-	 * Set the word's placement on the board.
-	 * @param wordPlacement the placement this word will have.
+	 * Set the word's {@link WordPlacement} on the {@link Grid}.
+	 *
+	 * @param wordPlacement {@link WordPlacement} this word should have.
 	 */
 	public void setWordPlacement( WordPlacement wordPlacement ) {
 		this.wordPlacement = wordPlacement;
 	}
 
 	/**
-	 * Converts the word model into a word representation
-	 * @return formatted word in the form of: word : definition \n
+	 * Reset the Word's {@link WordPlacement} and Flag.
+	 */
+	public void reset() {
+		wordPlacement = null;
+		writtenOnGrid = false;
+	}
+
+	/**
+	 * Converts this {@link Word} into a {@link String}.
+	 *
+	 * @return formatted {@link String} in the form of: "word : definition\n"
 	 */
 	@Override
 	public String toString() {
@@ -79,24 +112,18 @@ public class Word implements Comparable {
 	}
 
 	/**
-	 * Compares the length of two words and returns the difference.
-	 * @param otherWord reference to a word you want to compare to
+	 * Compares the length of two {@link Word}'s and return the difference.
+	 *
+	 * @param otherWord reference to a {@link Word} you want to compare to.
 	 * @return returns negative if this word is shorter than the argument.
 	 */
+	@Override
 	public int compareTo( Object otherWord ) {
 		int difference = 0;
 
-		if( otherWord instanceof Word)
-			difference = word.length() - ((Word)otherWord).getWordString().length();
+		if ( otherWord instanceof Word )
+			difference = word.length( ) - ( ( Word ) otherWord ).getWordString( ).length( );
 
 		return difference;
-	}
-
-	/**
-	 * Reset the word's placement and flags.
-	 */
-	public void reset(){
-		wordPlacement = null;
-		writtenOnGrid = false;
 	}
 }

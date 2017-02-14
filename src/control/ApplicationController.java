@@ -10,26 +10,52 @@ import model.DictionaryFile;
 import model.Grid;
 
 /**
- * ApplicationController.java - Main Controller class for the JavaFX Application.  Controls scene switching and message
- * passing between Primary Controllers.
+ * ApplicationController.java - Main Controller class for the {@link Application}.  Controls {@link Scene} switching and message
+ * passing between the Primary Controllers, {@link DictionaryLoaderController} and {@link CrosswordViewController}.
  *
- * @author Andrew J. McGuiness
+ * @author Andrew McGuiness
  * @version 27/Jan/2017
+ * @see DictionaryLoaderController
+ * @see CrosswordViewController
+ * @see GridController
+ * @see PuzzleImageController
  */
 public class ApplicationController extends Application {
-	//Primary Controllers
+	/**
+	 * {@link DictionaryLoaderController} that is used to control the view for loading {@link DictionaryFile}s.
+	 */
 	private DictionaryLoaderController dictionaryLoaderController;
+	/**
+	 * {@link CrosswordViewController} that is control the CrosswordPuzzle view, which is used to view the
+	 * {@link model.PuzzleImage}s genetated with the {@link PuzzleImageController}.
+	 */
 	private CrosswordViewController crosswordViewController;
+	/**
+	 * {@link GridController} that is used to build a {@link Grid} from the {@link DictionaryFile}.
+	 */
 	private GridController gridController;
+	/**
+	 * {@link PuzzleImageController} that is used to build a {@link model.PuzzleImage} from the {@link Grid}.
+	 */
 	private PuzzleImageController puzzleImageController;
 
-	//Scene references
+
+	/**
+	 * {@link Scene} view loaded in with a {@link FXMLLoader}.  Used to load in a {@link DictionaryFile}.
+	 */
 	private Scene dictionaryScene;
+	/**
+	 * {@link Scene} view loaded in with a {@link FXMLLoader}.  Used to view the {@link model.PuzzleImage}s.
+	 */
 	private Scene viewerScene;
 
-	//primaryStage passed in by JavaFX
+	/**
+	 * {@link Stage} passed in by the system.  Is the primary window handle.
+	 */
 	private Stage mainStage;
-
+	/**
+	 * {@link DictionaryFile} that contains a {@link model.WordList} that is used to generate a {@link Grid}.
+	 */
 	private DictionaryFile currentDictionaryFile;
 
 
@@ -38,9 +64,10 @@ public class ApplicationController extends Application {
 	}
 
 	/**
-	 * Called by the system to Start the application.  This will initialize the view and contoller references.  It then
-	 * changes the view to the DictionaryLoaderView, which is the default.
-	 * @param primaryStage
+	 * Called by the system to Start the {@link ApplicationController}.  This will initialize the view and contoler
+	 * references.  It then changes the view to the DictionaryLoaderView, which is the default.
+	 *
+	 * @param primaryStage {@link Stage} passed in by the system when the {@link ApplicationController} launches.
 	 * @throws Exception
 	 */
 	@Override
@@ -50,72 +77,78 @@ public class ApplicationController extends Application {
 		initDictionaryLoader( );
 		initCrosswordViewer( );
 
-		puzzleImageController = new PuzzleImageController();
-		gridController = new GridController();
+		puzzleImageController = new PuzzleImageController( );
+		gridController = new GridController( );
 
 		primaryStage.setTitle( "Crossword Generator 2K17" );
 		changeScene( ApplicationState.DICTIONARY_LOADER );
 	}
 
 	/**
-	 * Intialize the DictionaryLoaderView and it's controller reference
+	 * Initialize the DictionaryLoaderView and the {@link DictionaryLoaderController}.
+	 *
 	 * @throws java.io.IOException
 	 */
 	private void initDictionaryLoader() throws java.io.IOException {
-		FXMLLoader dictionay = new FXMLLoader( getClass().getResource("../view/DictionaryLoader.fxml") );
-		dictionaryScene = new Scene( dictionay.load() );
+		FXMLLoader dictionay = new FXMLLoader( getClass( ).getResource( "../view/DictionaryLoader.fxml" ) );
+		dictionaryScene = new Scene( dictionay.load( ) );
 
-		dictionaryLoaderController = dictionay.getController();
+		dictionaryLoaderController = dictionay.getController( );
 		dictionaryLoaderController.init( this );
 	}
 
 	/**
-	 * Initialize the CrosswordView and it's controller reference
+	 * Initialize the CrosswordViewerScene and the {@link CrosswordViewController}.
+	 *
 	 * @throws java.io.IOException
 	 */
 	private void initCrosswordViewer() throws java.io.IOException {
-		FXMLLoader viewer = new FXMLLoader( getClass().getResource( "../view/CrosswordView.fxml" ) );
-		viewerScene = new Scene( viewer.load() );
+		FXMLLoader viewer = new FXMLLoader( getClass( ).getResource( "../view/CrosswordView.fxml" ) );
+		viewerScene = new Scene( viewer.load( ) );
 
-		crosswordViewController = viewer.getController();
+		crosswordViewController = viewer.getController( );
 		crosswordViewController.init( this );
 	}
 
 
 	/**
-	 * A method used by the ViewControllers to switch that view of the application.
-	 * @param applicationState What state to switch the Application to.
+	 * Used by the ViewControllers to switch the view of the application.
+	 *
+	 * @param applicationState What {@link ApplicationState} to switch the Application to.
 	 */
-	public void changeScene( ApplicationState applicationState ){
-		mainStage.hide();
+	public void changeScene( ApplicationState applicationState ) {
+		mainStage.hide( );
 
-		switch( applicationState){
+		switch ( applicationState ) {
 			case IMAGE_VIEWER:
 				mainStage.setScene( viewerScene );
 				break;
-			case DICTIONARY_LOADER:default:
+			case DICTIONARY_LOADER:
+			default:
 				mainStage.setScene( dictionaryScene );
 				break;
 		}
 
-		mainStage.sizeToScene();
-		mainStage.show();
+		mainStage.sizeToScene( );
+		mainStage.show( );
 	}
 
 	/**
-	 * Method to generate a new Crossword and display it using the CrosswordImageView
-	 * @param dictionaryFile The DictionaryFile that should be used in the Crossword Generation
+	 * Set the {@link DictionaryFile} to then call the {@link #generateCrossword(DictionaryFile)} method.
+	 *
+	 * @param dictionaryFile {@link DictionaryFile} to set the current {@link DictionaryFile} to and use for generation.
 	 */
-	public void generateCrossword( DictionaryFile dictionaryFile ){
+	public void generateCrossword( DictionaryFile dictionaryFile ) {
 		this.currentDictionaryFile = dictionaryFile;
-		generateCrossword();
+		generateCrossword( );
 	}
 
 	/**
-	 * Method to generate a new Crossword and display it using the CrosswordImageView
+	 * Generate a {@link Grid} using the {@link GridController}, then use that to create a {@link model.PuzzleImage} using the
+	 * {@link PuzzleImageController} and display it using the {@link CrosswordViewController}.
 	 */
-	public void generateCrossword(){
-		currentDictionaryFile.reset();
+	public void generateCrossword() {
+		currentDictionaryFile.reset( );
 
 		Grid grid = gridController.createGrid( currentDictionaryFile );
 

@@ -2,72 +2,97 @@ package model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.Scanner;
 
 /**
- * DictionaryFile.java - Model representation of a Dictionary file loaded in by the user.  Will be used to create the final crossword puzzle.
+ * DictionaryFile.java - Model representation of a {@link DictionaryFile} loaded by the {@link control.DictionaryLoaderController}.
+ * The contents of the file will be used to populate the {@link WordList} with words and definitions from the selected
+ * text file.
  *
  * @author Andrew McGuiness
- * @version 25/Jan/2017
+ * @version 14/Feb/2017
  */
-//TODO: Fix Comments
 public class DictionaryFile {
 	/**
-	 * A reference to the file on disk.
+	 * A collection of {@link Word}s that has helpful manipulation commands.
 	 */
-	private File file;
 	private WordList wordList;
 
 	/**
-	 * Create a new Dictionary file from a pre-formatted text file.
-	 * @param file The Dictionary file that will be loaded.
+	 * Create a new {@link DictionaryFile} from a pre-formatted text {@link File}.  A reference to the {@link File} is
+	 * not maintained.e
+	 *
+	 * @param file The {@link File} that will be scanned for {@link Word}s.
 	 */
 	public DictionaryFile( File file ) throws IncompleteWordException, FileNotFoundException {
-		this.file = file;
-		parseFile( );
-		reset();
+		parseFile( file );
+		reset( );
 	}
 
 	/**
-	 * Parse the text file, pulling out the tokens in word : definition pairs.
+	 * Load up a new {@link Scanner} from the passed in {@link File}.  This {@link Scanner} is then passed to generate
+	 * the {@link WordList}.  The handle to the {@link File} is released after this method.
+	 *
+	 * @see #generateWordList(Scanner) Does the actual parsing.
 	 */
-	private void parseFile() throws IncompleteWordException, FileNotFoundException {
+	private void parseFile( File file ) throws IncompleteWordException, FileNotFoundException {
 		Scanner fileScanner = new Scanner( file );
 		generateWordList( fileScanner );
-		fileScanner.close();
+		fileScanner.close( );
 	}
 
-	private void generateWordList( Scanner scanner ) throws IncompleteWordException{
-		wordList = new WordList();
+	/**
+	 * This does the actual work of scanning the {@link File} with a {@link Scanner}.  Each {@link String} "word definition"
+	 * token pair is stored in a {@link Word} and then added to the {@link WordList}.
+	 *
+	 * @param scanner A {@link Scanner} that has been initialized with a {@link File} that contains "word definition" pairs.
+	 * @throws IncompleteWordException If there is a word with no definition, then this exception will be thrown.
+	 */
+	private void generateWordList( Scanner scanner ) throws IncompleteWordException {
+		wordList = new WordList( );
 
-		while(scanner.hasNext()){
-			String word = scanner.next();
-			String definition = scanner.nextLine();
+		while ( scanner.hasNext( ) ) {
+			String word = scanner.next( );
+			String definition = scanner.nextLine( );
 
-			if(word.isEmpty() || definition.isEmpty())
-				throw new IncompleteWordException();
+			if ( word.isEmpty( ) || definition.isEmpty( ) )
+				throw new IncompleteWordException( );
 			else
 				wordList.addWord( new Word( word, definition ) );
 		}
 
-		wordList.shuffle();
+		wordList.shuffle( );
 	}
 
-	public WordList getWordList(){
+	/**
+	 * Get a reference to the {@link WordList}.  Used to access the actual {@link Word}s inside the {@link File}.
+	 *
+	 * @return The {@link WordList} that contains all the {@link Word}s from the original {@link File}.
+	 */
+	public WordList getWordList() {
 		return wordList;
 	}
 
+	/**
+	 * Convert the {@link WordList} into a {@link String}.  Used mostly for debugging.
+	 *
+	 * @return {@link String} of all the {@link Word}s in the {@link WordList}.
+	 */
 	@Override
 	public String toString() {
 		String s = "";
-		if(wordList != null)
+		if ( wordList != null )
 			s += wordList;
 		return s;
 	}
 
-	public void reset(){
-		wordList.reset();
-		wordList.shuffle();
+	/**
+	 * Call reset on the {@link WordList} and then shuffle it into a random order.  This shuffling will help with
+	 * randomizing  the list to generate new {@link Grid}s from the same list and also to prevent the {@link Grid} from
+	 * failing because the {@link Word}s are in a certain order.
+	 */
+	public void reset() {
+		wordList.reset( );
+		wordList.shuffle( );
 	}
 }

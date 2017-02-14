@@ -102,10 +102,12 @@ public class GridController {
 		int iterations = words.listSize( ) * words.listSize( );
 
 		while ( currentWord != null && iterations > 0 ) {
-			attemptToPlaceWord( currentWord );
-
-			if ( wordsOnGrid.size( ) > 1 )
-				validateWordsOnBoard( );
+			if( attemptToPlaceWord( currentWord ) ) {
+				if ( wordsOnGrid.size( ) > 1 )
+					validateWordsOnBoard( );
+			}
+			else
+				words.pushToBack( currentWord );
 
 			currentWord = words.getNextUnplaced( );
 			iterations--;

@@ -1,20 +1,28 @@
 package model;
 
 /**
- * Vector2.java - A representation of a 2D positon on a grid.  This is mostly a helper data representation to
- * better organize words on an Abstract grid.  Just an easy way to encapsulate an x, y position.
+ * Vector2.java - A representation of a position on a two dimension {@link Grid}.  Used by {@link WordPlacement} to maintain
+ * the starting {@link GridCell} of a {@link Word} on the {@link Grid}
  *
  * @author - Andrew McGuiness
- * @version - 04/Feb/2017
+ * @version - 14/Feb/2017
+ * @see WordPlacement
  */
 public class Vector2 {
+	/**
+	 * The x position this {@link Vector2} represents.
+	 */
 	private int x;
+	/**
+	 * The y position this {@link Vector2}  represents.
+	 */
 	private int y;
 
 	/**
-	 * Manually specify the starting x and y positions for the new vector.
-	 * @param x starting x position.
-	 * @param y starting y position.
+	 * Manually specify the x and y positions for the new {@link Vector2} .
+	 *
+	 * @param x Int x position.
+	 * @param y Int y position.
 	 */
 	public Vector2( int x, int y ) {
 		this.x = x;
@@ -22,23 +30,25 @@ public class Vector2 {
 	}
 
 	/**
-	 * Set the x and y of the new vector equal to the passed vector.
-	 * @param vector2 x and y will be copied from this vector into the new vector.
+	 * Set the x and y of the new {@link Vector2} equal to the passed in {@link Vector2}.
+	 *
+	 * @param vector2 x and y will be copied from this {@link Vector2} into the new {@link Vector2}.
 	 */
-	public Vector2( Vector2 vector2){
-		this( vector2.x, vector2.y);
+	public Vector2( Vector2 vector2 ) {
+		this( vector2.x, vector2.y );
 	}
 
 	/**
-	 * Default constructor will set x and y to position 0.
+	 * Default constructor will set x and y to 0.
 	 */
-	public Vector2(){
-		this(0, 0);
+	public Vector2() {
+		this( 0, 0 );
 	}
 
 	/**
-	 * Compare two vectors for equality based on their positions.
-	 * @param otherVector any other Vector2.
+	 * Compare two {@link Vector2}s for equality based on their x, y positions.
+	 *
+	 * @param otherVector Other {@link Vector2} to be used for comparison.
 	 * @return true - if both vectors have the same x and y position.
 	 */
 	public boolean equals( Vector2 otherVector ) {
@@ -47,6 +57,7 @@ public class Vector2 {
 
 	/**
 	 * Getter method for the x position.
+	 *
 	 * @return the current value of x.
 	 */
 	public int getX() {
@@ -55,6 +66,7 @@ public class Vector2 {
 
 	/**
 	 * Setter method for the x position.
+	 *
 	 * @param x what to set x to.
 	 */
 	public void setX( int x ) {
@@ -63,6 +75,7 @@ public class Vector2 {
 
 	/**
 	 * Getter method for the y position.
+	 *
 	 * @return the current value of y.
 	 */
 	public int getY() {
@@ -71,6 +84,7 @@ public class Vector2 {
 
 	/**
 	 * Setter method for the y position.
+	 *
 	 * @param y what to set y to.
 	 */
 	public void setY( int y ) {

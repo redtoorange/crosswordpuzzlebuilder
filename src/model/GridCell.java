@@ -3,62 +3,77 @@ package model;
 import java.util.ArrayList;
 
 /**
- * GridCell.java - Model of a single cell in the grid.  Encapsulates references to all the words that occupy the cell.
+ * GridCell.java - Model of a single cell in the {@link Grid}.  Encapsulates references to all the {@link Word}s that
+ * occupy this {@link GridCell}.
  *
  * @author - Andrew McGuiness
- * @version - 04/Feb/2017
+ * @version - 14/Feb/2017
+ * @see Word
+ * @see Grid
  */
 public class GridCell {
+	/**
+	 * char that is contained in this {@link GridCell}.
+	 */
 	private char character = 0;
-	private ArrayList<Word> references = new ArrayList<Word>(  );
+	/**
+	 * An {@link ArrayList} of all the {@link Word}s that overlap this {@link GridCell}.
+	 */
+	private ArrayList< Word > references = new ArrayList< Word >( );
 
 	/**
-	 * Get the character that this GridCell represents.
-	 * @return
+	 * Get the char that this {@link GridCell} represents.
+	 *
+	 * @return primitive char that is contained in this {@link GridCell}.
 	 */
 	public char getCharacter() {
 		return character;
 	}
 
 	/**
-	 * Set the character for this GridCell.
-	 * @param character
+	 * Set the char for this {@link GridCell}.
+	 *
+	 * @param character the char to put into this {@link GridCell}.
 	 */
 	public void setCharacter( char character ) {
 		this.character = character;
 	}
 
 	/**
-	 * Get the list of all Words that reference this cell.  Each one has a letter that is in this GridCell.
-	 * @return The list of Words that overlap this GridCell.
+	 * Get the list of all {@link Word}s that reference this {@link GridCell}.  Each one has a char that is in this {@link GridCell}.
+	 *
+	 * @return The list of {@link Word}s that overlap this {@link GridCell}.
 	 */
-	public ArrayList<Word> getReferences() {
+	public ArrayList< Word > getReferences() {
 		return references;
 	}
 
 	/**
-	 * Add a word to this GridCell's references.
-	 * @param word The word that overlaps with this GridCell.
+	 * Add a {@link Word} to this {@link GridCell}'s references.
+	 *
+	 * @param word The {@link Word} that overlaps with this {@link GridCell} and should be added to references..
 	 */
-	public void addReference( Word word){
+	public void addReference( Word word ) {
 		references.add( word );
 	}
 
 	/**
-	 * Remove a word from this GridCell's references.  If references are 0, then the character is reset to 0.
-	 * @param word The word that should be removed from the GridCell because it no longer overlaps with it.
+	 * Remove a {@link Word} from this {@link GridCell}'s references.  If {@link Word} references are 0, then the char
+	 * is set to 0 (empty char).
+	 *
+	 * @param word The {@link Word} that should be removed from the {@link GridCell} because it no longer overlaps with it.
 	 */
-	public void removeReference( Word word){
+	public void removeReference( Word word ) {
 		references.remove( word );
-		if(references.size() <= 0)
-			setCharacter( (char)0 );
+		if ( references.size( ) <= 0 )
+			setCharacter( ( char ) 0 );
 	}
 
 	/**
-	 * Clear all the references from this GridCell and reset the character to 0.
+	 * Clear all the {@link Word} references from this {@link GridCell} and reset the char to 0 (empty char).
 	 */
-	public void reset(){
+	public void reset() {
 		setCharacter( ( char ) 0 );
-		getReferences().clear();
+		getReferences( ).clear( );
 	}
 }
