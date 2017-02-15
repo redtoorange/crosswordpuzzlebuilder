@@ -1,6 +1,7 @@
 package control;
 
 import model.*;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,6 +25,7 @@ public class GridController {
 
 	/**
 	 * Essentially a factory method to create a grid from a given DictionaryFile
+	 *
 	 * @param dictionaryFile The file to pull the WordList from.
 	 * @return The finished grid object.
 	 */
@@ -36,13 +38,13 @@ public class GridController {
 		initGridCells( );
 		buildPuzzle( dictionaryFile );
 
-		return  new Grid( width, height, letterGrid, wordsOnGrid );
+		return new Grid( width, height, letterGrid, wordsOnGrid );
 	}
 
 	/**
 	 * Initialize all the GridCell references in the letterGrid array.
 	 */
-	private void initGridCells( ) {
+	private void initGridCells() {
 		for ( int x = 0; x < letterGrid.length; x++ )
 			for ( int y = 0; y < letterGrid[x].length; y++ )
 				letterGrid[x][y] = new GridCell( );
@@ -59,6 +61,7 @@ public class GridController {
 
 	/**
 	 * Fit the words onto the grid, then create an image out of it.
+	 *
 	 * @param dictionaryFile the dictionary file to be use for the word list
 	 * @return
 	 */
@@ -71,9 +74,8 @@ public class GridController {
 			validBoard = attemptToPlaceAllWords( words );
 
 			if ( !validBoard ) {
-				//System.out.println( "board invalid, resetting" );
 				clearTheGrid( );
-				dictionaryFile.reset();
+				dictionaryFile.reset( );
 			}
 		}
 
@@ -87,13 +89,14 @@ public class GridController {
 	/**
 	 * A soft-reset of the grid that doesn't manipulate the letterGrid Array.  Used when the grid is found to be invalid.
 	 */
-	private void clearTheGrid( ) {
+	private void clearTheGrid() {
 		resetGridCells( );
 		wordsOnGrid.clear( );
 	}
 
 	/**
 	 * Attempt to find a spot for all the words in the WordList
+	 *
 	 * @param words The WordList to be placed.
 	 * @return returns true of all the words in the wordList were placed on the Grid.
 	 */
@@ -102,7 +105,7 @@ public class GridController {
 		int iterations = words.listSize( ) * words.listSize( );
 
 		while ( currentWord != null && iterations > 0 ) {
-			if( attemptToPlaceWord( currentWord ) ) {
+			if ( attemptToPlaceWord( currentWord ) ) {
 				if ( wordsOnGrid.size( ) > 1 )
 					validateWordsOnBoard( );
 			}
@@ -142,8 +145,8 @@ public class GridController {
 
 		for ( Word w : wordsOnGrid ) {
 			Vector2 pos = w.getWordPlacement( ).getStartPosition( );
-			int x = pos.getX() - lowestX + 1;
-			int y = pos.getY() - lowestY + 1;
+			int x = pos.getX( ) - lowestX + 1;
+			int y = pos.getY( ) - lowestY + 1;
 			pos.setX( x );
 			pos.setY( y );
 		}
@@ -162,6 +165,7 @@ public class GridController {
 
 	/**
 	 * Try to place the given word on the grid.
+	 *
 	 * @param currentWord Which word to try to allocate a position for.
 	 * @return True if the word was successfully placed.
 	 */
@@ -197,6 +201,7 @@ public class GridController {
 	/**
 	 * Find all letters in all words currently on the board that match a letter in the current word.  Each match will be
 	 * encapsulated into a WordPlacement Object that represents a potential overlap location.
+	 *
 	 * @param current The string representation of the current word.
 	 * @return A list of all the overlaps that are suitable, represented as a WordPlacement
 	 */
@@ -227,8 +232,9 @@ public class GridController {
 
 	/**
 	 * Parse the list of valid overlaps to create a list of valid placements cause an overlap.
+	 *
 	 * @param potentialOverlaps A list of all the overlaps detected.
-	 * @param current The string representation of the current word.
+	 * @param current           The string representation of the current word.
 	 * @return A list of all the valid WordPlacements that have been generated that would cause the overlap.
 	 */
 	private ArrayList< WordPlacement > generatePlacements( ArrayList< WordPlacement > potentialOverlaps, String current ) {
@@ -265,15 +271,16 @@ public class GridController {
 
 	/**
 	 * Test a placement for validity.  If valid, it will be returned an added as a candidate position.
-	 * @param current The string representation of the current word.
+	 *
+	 * @param current     The string representation of the current word.
 	 * @param orientation The Orientation to test.
-	 * @param startX The starting X position to test.
-	 * @param startY The starting Y position to test.
+	 * @param startX      The starting X position to test.
+	 * @param startY      The starting Y position to test.
 	 * @return Null if invalid, otherwise the placement was determined to be valid.
 	 */
 	private WordPlacement testPlacement( String current, Orientation orientation, final int startX, final int startY ) {
 		WordPlacement placement = null;
-		boolean withinBounds = isWithinBounds( orientation, startX, startY, current.length() );
+		boolean withinBounds = isWithinBounds( orientation, startX, startY, current.length( ) );
 
 		if ( withinBounds ) {
 			ArrayList< Word > possibleOverlaps = new ArrayList< Word >( );
@@ -292,10 +299,11 @@ public class GridController {
 
 	/**
 	 * Check the beginning and ending of a word to make sure there is a gap.
-	 * @param current The String representation of the current Word
+	 *
+	 * @param current     The String representation of the current Word
 	 * @param orientation What orientation that should be tested for conflicts
-	 * @param startX The starting X position
-	 * @param startY The starting Y position
+	 * @param startX      The starting X position
+	 * @param startY      The starting Y position
 	 * @return False if there are no conflicts, two if there are any.
 	 */
 	private boolean findPositionConflicts( String current, Orientation orientation, int startX, int startY ) {
@@ -321,10 +329,11 @@ public class GridController {
 	 * Step through each potential cell that the word would occupy.  If the cell is empty, continue, if not, test the
 	 * cell's character to see if it matches the index of the currentWord. If it does, it is a valid overlap.  So it
 	 * parses the GridCell's word references and adds them to the potential overlap list.
-	 * @param current The string representation of the current word.
-	 * @param orientation The orientation of the word to test.
-	 * @param startX The starting X position to test.
-	 * @param startY The starting Y position to test.
+	 *
+	 * @param current          The string representation of the current word.
+	 * @param orientation      The orientation of the word to test.
+	 * @param startX           The starting X position to test.
+	 * @param startY           The starting Y position to test.
 	 * @param possibleOverlaps A List that will contain all word references that the tested placement overlaps.
 	 * @return False is there were no conflicts.  True if a cell in the path did not match the word.
 	 */
@@ -351,10 +360,11 @@ public class GridController {
 
 	/**
 	 * Get a list of references from a GridCell at a specific position.
+	 *
 	 * @param orientation The orientation that needs to be validated.
-	 * @param x The starting x position to be tested.
-	 * @param y The starting y position to be tested.
-	 * @param offset How much to offset the position based on the orientation.
+	 * @param x           The starting x position to be tested.
+	 * @param y           The starting y position to be tested.
+	 * @param offset      How much to offset the position based on the orientation.
 	 * @return A list of references to all the words that overlap the given GridCell.
 	 */
 	private ArrayList< Word > getReferences( Orientation orientation, final int x, final int y, final int offset ) {
@@ -365,10 +375,11 @@ public class GridController {
 
 	/**
 	 * Get a char from a GridCell at a specified position.
+	 *
 	 * @param orientation The orientation that needs to be validated.
-	 * @param x The starting x position to be tested.
-	 * @param y The starting y position to be tested.
-	 * @param offset How much to offset the position based on the orientation.
+	 * @param x           The starting x position to be tested.
+	 * @param y           The starting y position to be tested.
+	 * @param offset      How much to offset the position based on the orientation.
 	 * @return the char that the GridCell contains.
 	 */
 	private char getChar( Orientation orientation, final int x, final int y, final int offset ) {
@@ -379,14 +390,14 @@ public class GridController {
 
 	/**
 	 * Ensure that a placement will be within the bounds of the grid.
+	 *
 	 * @param orientation The orientation that needs to be validated.
-	 * @param x The starting x position to be tested.
-	 * @param y The starting y position to be tested.
-	 * @param wordLength The length of the word that is being tested.
+	 * @param x           The starting x position to be tested.
+	 * @param y           The starting y position to be tested.
+	 * @param wordLength  The length of the word that is being tested.
 	 * @return True is the dimensions are within the bounds of the grid.
 	 */
 	private boolean isWithinBounds( Orientation orientation, final int x, final int y, final int wordLength ) {
-		//System.out.println( "checking bounds " );
 		boolean withinBounds = false;
 
 		if ( orientation == Orientation.HORIZONTAL )
@@ -400,11 +411,11 @@ public class GridController {
 	/**
 	 * Parse the list of all valid placements and determine the one with the most overlaps.  This one will be used to
 	 * place the word.
+	 *
 	 * @param placements List of valid placements
 	 * @return The best placement determined by number of overlaps.
 	 */
 	private WordPlacement findBestPlacement( ArrayList< WordPlacement > placements ) {
-		//System.out.println( "finding best placement " );
 		WordPlacement bestPlacement = null;
 
 		if ( placements.size( ) > 0 ) {
@@ -419,10 +430,10 @@ public class GridController {
 
 	/**
 	 * Write the currentWord onto the grid, populating cells with references and a character if they are empty
+	 *
 	 * @param currentWord The word to write to the board.
 	 */
 	private void writeWordToGrid( Word currentWord ) {
-		//System.out.println( "writing to grid " + currentWord.getWordString( ) );
 		WordPlacement wordPlacement = new WordPlacement( currentWord.getWordPlacement( ) );
 		String string = currentWord.getWordString( );
 
@@ -446,21 +457,20 @@ public class GridController {
 
 	/**
 	 * Update all the word that the currentWord overlaps to add a reference of the current word.
+	 *
 	 * @param currentWord
 	 */
 	private void addOverlapReferences( Word currentWord ) {
-		//System.out.println( "writing to overlaps " + currentWord.getWordString( ) );
-
 		for ( Word overlappingWord : currentWord.getWordPlacement( ).getOverlaps( ) )
 			overlappingWord.getWordPlacement( ).addOverlap( currentWord );
 	}
 
 	/**
 	 * Remove a word from the board, this effectively clears the cells if they no longer have any references.
+	 *
 	 * @param currentWord The word to deleted from the board.
 	 */
 	private void deleteWordFromGrid( Word currentWord ) {
-		//System.out.println( "deleting from grid " + currentWord.getWordString( ) );
 		WordPlacement wordPlacement = currentWord.getWordPlacement( );
 		String w = currentWord.getWordString( );
 
@@ -481,25 +491,24 @@ public class GridController {
 
 	/**
 	 * When a word is removed from the board, all the overlap references it had will be updated.
+	 *
 	 * @param word
 	 */
 	private void removeOverlapReferences( Word word ) {
-		//System.out.println( "removing overlaps for " + word.getWordString( ) );
-
 		for ( Word w : word.getWordPlacement( ).getOverlaps( ) )
 			w.getWordPlacement( ).removeOverlap( word );
 	}
 
 	/**
 	 * Special case method to place the first word in the center of the given grid.
+	 *
 	 * @param currentWord The first word in the WordList
 	 */
 	private void placeFirstWord( Word currentWord ) {
-		//System.out.println( "Placing first word " + currentWord.getWordString( ) );
 		int x = ( width / 2 );
 		int y = ( height / 2 );
 
-		Orientation orientation = ( new Random().nextBoolean( ) ? Orientation.HORIZONTAL : Orientation.VERTICAL );
+		Orientation orientation = ( new Random( ).nextBoolean( ) ? Orientation.HORIZONTAL : Orientation.VERTICAL );
 
 		if ( orientation == Orientation.VERTICAL ) {
 			y -= currentWord.getWordString( ).length( );
@@ -520,8 +529,6 @@ public class GridController {
 	 * recently added word, so it will be popped off the grid.
 	 */
 	private void validateWordsOnBoard() {
-		//System.out.println( "Checking all words are valid on board" );
-
 		boolean keepChecking = true;
 		int index = 0;
 		while ( keepChecking && index < wordsOnGrid.size( ) ) {
@@ -544,12 +551,11 @@ public class GridController {
 
 	/**
 	 * Check the beginning and ending of the given word to make sure there is an empty cell before and after the word.
+	 *
 	 * @param word The word to validate.
 	 * @return True is the cells are still clear, False if they are occupied.
 	 */
 	private boolean spacesBeforeAfterClear( Word word ) {
-		//System.out.println( "checking spaces before and after " + word.getWordString( ) );
-
 		Vector2 position = word.getWordPlacement( ).getStartPosition( );
 		Orientation orientation = word.getWordPlacement( ).getOrientation( );
 		int length = word.getWordString( ).length( );
