@@ -12,7 +12,7 @@ import java.util.Collections;
  */
 public class WordList {
 	/**
-	 * An {@link ArrayList}<{@link Word}> that contains all the words from a {@link DictionaryFile}.
+	 * An {@link ArrayList} of {@link Word}s that contains all the words from a {@link DictionaryFile}.
 	 */
 	private ArrayList< Word > wordsArrayList;
 
@@ -24,9 +24,9 @@ public class WordList {
 	}
 
 	/**
-	 * Create a new {@link WordList} with a starting {@link ArrayList}<{@link Word}> that is passed in.
+	 * Create a new {@link WordList} with a starting {@link ArrayList} of {@link Word}s that is passed in.
 	 *
-	 * @param wordsArrayList The initial {@link ArrayList}<{@link Word}> to use.
+	 * @param wordsArrayList The initial {@link ArrayList} of {@link Word}s to use.
 	 */
 	public WordList( ArrayList< Word > wordsArrayList ) {
 		this.wordsArrayList = wordsArrayList;
@@ -110,5 +110,4 @@ public class WordList {
 		word.reset( );
 		wordsArrayList.add( word );
 	}
-
 }

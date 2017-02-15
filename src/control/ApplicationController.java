@@ -68,7 +68,7 @@ public class ApplicationController extends Application {
 	 * references.  It then changes the view to the DictionaryLoaderView, which is the default.
 	 *
 	 * @param primaryStage {@link Stage} passed in by the system when the {@link ApplicationController} launches.
-	 * @throws Exception
+	 * @throws Exception	Default exception thrown by the system if the Window fails to launch.
 	 */
 	@Override
 	public void start( Stage primaryStage ) throws Exception {
@@ -87,7 +87,7 @@ public class ApplicationController extends Application {
 	/**
 	 * Initialize the DictionaryLoaderView and the {@link DictionaryLoaderController}.
 	 *
-	 * @throws java.io.IOException
+	 * @throws java.io.IOException	if the {@link FXMLLoader} fails to find the FXML file.
 	 */
 	private void initDictionaryLoader() throws java.io.IOException {
 		FXMLLoader dictionay = new FXMLLoader( getClass( ).getResource( "../view/DictionaryLoader.fxml" ) );
@@ -100,7 +100,7 @@ public class ApplicationController extends Application {
 	/**
 	 * Initialize the CrosswordViewerScene and the {@link CrosswordViewController}.
 	 *
-	 * @throws java.io.IOException
+	 * @throws java.io.IOException if the {@link FXMLLoader} fails to find the FXML file.
 	 */
 	private void initCrosswordViewer() throws java.io.IOException {
 		FXMLLoader viewer = new FXMLLoader( getClass( ).getResource( "../view/CrosswordView.fxml" ) );

@@ -21,14 +21,6 @@ import java.io.IOException;
  * @version - 14/Feb/2017
  */
 public class CrosswordViewController {
-	/**
-	 * {@link String} title that will be displayed on the {@link FileChooser} when saving the answered puzzle.
-	 */
-	private final String ANSWERED_SAVE_TITLE = "Save Answer Key To...";
-	/**
-	 * {@link String} title that will be displayed on the {@link FileChooser} when saving the blank puzzle.
-	 */
-	private final String BLANK_SAVE_TITLE = "Save Blank Puzzle To...";
 
 	/**
 	 * The main {@link ApplicationController} that is used to control the entire Application.
@@ -60,10 +52,10 @@ public class CrosswordViewController {
 	 */
 	@FXML
 	public void saveButtonClicked( ActionEvent event ) {
-		fileChooser.setTitle( ANSWERED_SAVE_TITLE );
+		fileChooser.setTitle( "Save Answer Key To..." );
 		writeImageFile( fileChooser.showSaveDialog( null ), puzzleImage.getAnsweredImage( ) );
 
-		fileChooser.setTitle( BLANK_SAVE_TITLE );
+		fileChooser.setTitle( "Save Blank Puzzle To..." );
 		writeImageFile( fileChooser.showSaveDialog( null ), puzzleImage.getBlankImage( ) );
 	}
 
