@@ -11,6 +11,7 @@ import java.util.Random;
  * @author Andrew McGuiness
  * @version 13/Feb/2017
  */
+//TODO: Fix Comments
 public class GridController {
 	private static int STARTING_WIDTH = 100;
 	private static int STARTING_HEIGHT = 100;
@@ -33,7 +34,6 @@ public class GridController {
 		height = STARTING_HEIGHT;
 
 		initGridCells( );
-
 		buildPuzzle( dictionaryFile );
 
 		return  new Grid( width, height, letterGrid, wordsOnGrid );

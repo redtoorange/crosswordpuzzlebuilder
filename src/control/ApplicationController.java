@@ -14,7 +14,7 @@ import model.Grid;
  * passing between the Primary Controllers, {@link DictionaryLoaderController} and {@link CrosswordViewController}.
  *
  * @author Andrew McGuiness
- * @version 27/Jan/2017
+ * @version 14/Feb/2017
  * @see DictionaryLoaderController
  * @see CrosswordViewController
  * @see GridController
