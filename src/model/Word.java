@@ -1,29 +1,25 @@
 package model;
 
 /**
- * Word.java - A model of a word.  Contains the {@link String} definition, the {@link String} word and it's {@link WordPlacement}.
+ * Word.java - A model of a word.  Contains the {@link String} definition, the {@link String} word and it's {@link
+ * WordPlacement}.
  *
  * @author - Andrew McGuiness
  * @version - 14/Feb/2017
  */
 public class Word implements Comparable {
-	/**
-	 * Immutable. The {@link String} that this word represents.  Loaded from a {@link DictionaryFile} during construction.
-	 */
+	/** The {@link String} that this word represents.  Loaded from a {@link DictionaryFile} during construction. */
 	private final String word;
 
-	/**
-	 * Immutable. The {@link String} definition for this word.  Loaded from a {@link DictionaryFile} during construction.
-	 */
+	/** The {@link String} definition for this word.  Loaded from a {@link DictionaryFile} during construction. */
 	private final String definition;
 
-	/**
-	 * The {@link WordPlacement} of a word on the {@link Grid}.  It is only set by the {@link control.GridController}.
-	 */
+	/** The {@link WordPlacement} of a word on the {@link Grid}.  It is only set by the {@link control.GridController}. */
 	private WordPlacement wordPlacement = null;
 
 	/**
-	 * Flag used by the {@link control.GridController}. to determine if a {@link Word} is currently written on a {@link Grid}.
+	 * The Flag used by the {@link control.GridController}. to determine if a {@link Word} is currently written on a
+	 * {@link Grid}.
 	 */
 	private boolean writtenOnGrid = false;
 

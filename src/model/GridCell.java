@@ -12,13 +12,10 @@ import java.util.ArrayList;
  * @see Grid
  */
 public class GridCell {
-	/**
-	 * char that is contained in this {@link GridCell}.
-	 */
+	/** The char that is contained in this {@link GridCell}. */
 	private char character = 0;
-	/**
-	 * An {@link ArrayList} of all the {@link Word}s that overlap this {@link GridCell}.
-	 */
+
+	/** The {@link ArrayList} of all the {@link Word}s that overlap this {@link GridCell}. */
 	private ArrayList< Word > references = new ArrayList< Word >( );
 
 	/**
@@ -40,7 +37,8 @@ public class GridCell {
 	}
 
 	/**
-	 * Get the list of all {@link Word}s that reference this {@link GridCell}.  Each one has a char that is in this {@link GridCell}.
+	 * Get the list of all {@link Word}s that reference this {@link GridCell}.  Each one has a char that is in this
+	 * {@link GridCell}.
 	 *
 	 * @return The list of {@link Word}s that overlap this {@link GridCell}.
 	 */
@@ -61,7 +59,8 @@ public class GridCell {
 	 * Remove a {@link Word} from this {@link GridCell}'s references.  If {@link Word} references are 0, then the char
 	 * is set to 0 (empty char).
 	 *
-	 * @param word The {@link Word} that should be removed from the {@link GridCell} because it no longer overlaps with it.
+	 * @param word The {@link Word} that should be removed from the {@link GridCell} because it no longer overlaps with
+	 *             it.
 	 */
 	public void removeReference( Word word ) {
 		references.remove( word );

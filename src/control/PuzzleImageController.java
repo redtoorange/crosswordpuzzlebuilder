@@ -11,29 +11,22 @@ import java.util.Scanner;
  * using the standard U.S. Paper size of 8.5x11 with a resolution of 150 pixels-per-inch
  *
  * @author Andrew McGuiness
- * @version 14/Feb/2017
+ * @version 15/Feb/2017
  */
-//TODO: Fix Comments
 public class PuzzleImageController {
-	/**
-	 * Standard Width in inches of U.S. Printer Paper.
-	 */
+	/** The standard Width in inches of U.S. Printer Paper. {@value} */
 	private static final double PAPER_WIDTH = 8.5;
-	/**
-	 * Standard Height in inches of U.S. Printer Paper.
-	 */
+
+	/** The standard Height in inches of U.S. Printer Paper. {@value} */
 	private static final double PAPER_HEIGHT = 11;
-	/**
-	 * The resolution of the final image in pixels per square inch.
-	 */
+
+	/** The resolution of the final image in pixels per square inch. {@value} */
 	private static final int PIXELS_PER_INCH = 150;
-	/**
-	 * The image Width in pixels, based on the PPI.
-	 */
+
+	/** The image Width in pixels, based on the PPI. */
 	private static final int IMAGE_WIDTH = ( int ) ( PAPER_WIDTH * PIXELS_PER_INCH );
-	/**
-	 * The image Height in pixels, based on the PPI.
-	 */
+
+	/** The image Height in pixels, based on the PPI. */
 	private static final int IMAGE_HEIGHT = ( int ) ( PAPER_HEIGHT * PIXELS_PER_INCH );
 
 	/**
@@ -42,25 +35,22 @@ public class PuzzleImageController {
 	 */
 	private int width, height, cellSize, yOffset, xOffset, buffer, fontSize;
 
-	/**
-	 * The {@link Graphics2D} used to write to the answered image of the {@link PuzzleImage}.
-	 */
+	/** The {@link Graphics2D} used to write to the answered image of the {@link PuzzleImage}. */
 	private Graphics2D answerKeyWriter;
-	/**
-	 * The {@link Graphics2D} used to write to the blank image of the {@link PuzzleImage}.
-	 */
+
+	/** The {@link Graphics2D} used to write to the blank image of the {@link PuzzleImage}. */
 	private Graphics2D blankPuzzleWriter;
 
 	/**
-	 * Factory Method to create a new {@link PuzzleImage} with the given buffer amount from the given {@link Grid}.
-	 * The words and definitions will be pulled from the {@link Word} {@link java.util.ArrayList} inside the {@link Grid}.
+	 * Factory Method to create a new {@link PuzzleImage} with the given buffer amount from the given {@link Grid}. The
+	 * words and definitions will be pulled from the {@link Word} {@link java.util.ArrayList} inside the {@link Grid}.
 	 *
 	 * @param grid   The {@link Grid} to use to create the {@link BufferedImage}s.
 	 * @param buffer The buffer is the number of pixels to pad the edge of the {@link BufferedImage}s by and the amount
 	 *               of spacing for the definitions at the bottom.
 	 */
 	public PuzzleImage createPuzzleImage( Grid grid, int buffer ) {
-		setDimensions( grid, buffer );
+		setImageDimensions( grid, buffer );
 
 		PuzzleImage puzzleImage = initPuzzleImage( );
 
@@ -95,7 +85,7 @@ public class PuzzleImageController {
 	 * @param grid   The {@link Grid} that the {@link PuzzleImage} will be based on.
 	 * @param buffer How much of a buffer that should be used when building the {@link PuzzleImage}.
 	 */
-	private void setDimensions( Grid grid, int buffer ) {
+	private void setImageDimensions( Grid grid, int buffer ) {
 		this.buffer = buffer;
 		width = ( IMAGE_WIDTH - buffer ) / grid.getWidth( );
 		height = ( ( int ) ( IMAGE_HEIGHT * .65 ) - buffer ) / grid.getHeight( );
@@ -234,7 +224,6 @@ public class PuzzleImageController {
 	 * @param y     The y of the rect in the original {@link Grid}.
 	 * @param color What {@link Color} to use for the rect.
 	 */
-	//TODO: Refactor this
 	private void drawFilledRect( int x, int y, Color color ) {
 		answerKeyWriter.setColor( color );
 		answerKeyWriter.fillRect( x * cellSize + xOffset,
@@ -254,7 +243,6 @@ public class PuzzleImageController {
 	 * @param y     The y of the rect in the original {@link Grid}.
 	 * @param color What {@link Color} to use for the rect.
 	 */
-	//TODO: refactor this
 	private void drawHollowRect( int x, int y, Color color ) {
 		answerKeyWriter.setColor( color );
 		answerKeyWriter.drawRect( x * cellSize + xOffset,

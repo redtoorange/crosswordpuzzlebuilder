@@ -1,21 +1,18 @@
 package model;
 
 /**
- * Vector2.java - A representation of a position on a two dimension {@link Grid}.  Used by {@link WordPlacement} to maintain
- * the starting {@link GridCell} of a {@link Word} on the {@link Grid}
+ * Vector2.java - A representation of a position on a two dimension {@link Grid}.  Used by {@link WordPlacement} to
+ * maintain the starting {@link GridCell} of a {@link Word} on the {@link Grid}
  *
  * @author - Andrew McGuiness
  * @version - 14/Feb/2017
  * @see WordPlacement
  */
 public class Vector2 {
-	/**
-	 * The x position this {@link Vector2} represents.
-	 */
+	/** The x position this {@link Vector2} represents. */
 	private int x;
-	/**
-	 * The y position this {@link Vector2}  represents.
-	 */
+
+	/** The y position this {@link Vector2}  represents. */
 	private int y;
 
 	/**

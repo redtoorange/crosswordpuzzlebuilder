@@ -20,46 +20,35 @@ import java.io.FileNotFoundException;
  * @version 14/Feb/2017
  */
 public class DictionaryLoaderController {
-	/**
-	 *  {@link String} title that will be displayed on the {@link FileChooser} when loading a {@link DictionaryFile}.
-	 */
+	/** The {@link String} title that will be displayed on the {@link FileChooser} when loading a {@link DictionaryFile}. */
 	private final String FILE_CHOOSER_TITLE = "Selected a Dictionary File";
-	/**
-	 *  {@link String} description of the {@link java.io.FileFilter} set in the {@link FileChooser}.
-	 */
+
+	/** The {@link String} description of the {@link java.io.FileFilter} set in the {@link FileChooser}. */
 	private final String FILTER_DESCRIPTION = "Text File";
-	/**
-	 *  The actual {@link String} filter of the {@link java.io.FileFilter} set in the {@link FileChooser}.
-	 */
+
+	/** The actual {@link String} filter of the {@link java.io.FileFilter} set in the {@link FileChooser}. */
 	private final String FILTER_EXTENSION = "*.txt";
-	/**
-	 *  The {@link String} message to display to the user on the {@link Alert} message.
-	 */
+
+	/** The {@link String} message to display to the user on the {@link Alert} message. */
 	private final String INVALID_FILE_MSG = "That file is not valid.";
 
-	/**
-	 *  The main {@link ApplicationController} that controls the entire program.
-	 */
+	/** The main {@link ApplicationController} that controls the entire program. */
 	private ApplicationController launchLoader;
-	/**
-	 *  A reference to a {@link FileChooser} that is used to select a {@link DictionaryFile}.
-	 */
+
+	/** The reference to a {@link FileChooser} that is used to select a {@link DictionaryFile}. */
 	private FileChooser dictionaryChooser;
-	/**
-	 *  The raw {@link File} that is loaded in by the {@link FileChooser}.
-	 */
+
+	/** The raw {@link File} that is loaded in by the {@link FileChooser}. */
 	private File selectedFile;
 
-	/**
-	 *  {@link Button} that generates a new {@link model.Grid} from a loaded {@link DictionaryFile}.
-	 */
+	/** The {@link Button} that generates a new {@link model.Grid} from a loaded {@link DictionaryFile}. */
 	@FXML
 	private Button generateButton;
-	/**
-	 *  {@link TextField} that will display the path to the selected {@link File} or can be used for input.
-	 */
+
+	/** The {@link TextField} that will display the path to the selected {@link File} or can be used for input. */
 	@FXML
 	private TextField filePathText;
+
 
 	/**
 	 * Hook this controller back to the {@link ApplicationController} to allow the callback for when the generate
@@ -85,8 +74,8 @@ public class DictionaryLoaderController {
 	}
 
 	/**
-	 * {@link ActionEvent} Listener method for when the generate button is clicked.  It is disabled until a Valid {@link File}
-	 * is selected or typed in and processed.
+	 * {@link ActionEvent} Listener method for when the generate button is clicked.  It is disabled until a Valid {@link
+	 * File} is selected or typed in and processed.
 	 *
 	 * @param event Not Used.
 	 */
@@ -105,8 +94,8 @@ public class DictionaryLoaderController {
 	}
 
 	/**
-	 * {@link ActionEvent} Listener for the file chooser button.  Launches a {@link FileChooser} to select a {@link DictionaryFile}
-	 * to load from disk.
+	 * {@link ActionEvent} Listener for the file chooser button.  Launches a {@link FileChooser} to select a {@link
+	 * DictionaryFile} to load from disk.
 	 *
 	 * @param event Not Used.
 	 */
@@ -116,8 +105,8 @@ public class DictionaryLoaderController {
 	}
 
 	/**
-	 * Launch the {@link FileChooser} to select a {@link DictionaryFile} in the form of a .txt file.  If the user selects
-	 * a {@link File}, it is sent to {@link #processFile(File)}. (future proof for other file formats).
+	 * Launch the {@link FileChooser} to select a {@link DictionaryFile} in the form of a .txt file.  If the user
+	 * selects a {@link File}, it is sent to {@link #processFile(File)}. (future proof for other file formats).
 	 */
 	private void launchFileChooser() {
 		File chosenFile = null;
