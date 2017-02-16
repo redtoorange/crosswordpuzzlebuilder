@@ -13,8 +13,10 @@ import java.util.ArrayList;
 public class WordPlacement {
 	/** The {@link GridCell} position to place the first letter of the {@link Word}. */
 	private Vector2 startPosition;
+	
 	/** The {@link Orientation} of the {@link Word}. */
 	private Orientation orientation;
+
 	/** The {@link ArrayList} of other {@link Word}s that this {@link WordPlacement} overlap with. */
 	private ArrayList< Word > overlaps;
 

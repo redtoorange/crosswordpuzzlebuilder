@@ -9,6 +9,8 @@ import model.ApplicationState;
 import model.DictionaryFile;
 import model.Grid;
 
+import java.io.IOException;
+
 /**
  * ApplicationController.java - Main Controller class for the {@link Application}.  Controls {@link Scene} switching and
  * message passing between the Primary Controllers, {@link DictionaryLoaderController} and {@link
@@ -21,7 +23,7 @@ import model.Grid;
  * @see GridController
  * @see PuzzleImageController
  */
-public class ApplicationController extends Application {
+public class ApplicationController {
 	/** The {@link DictionaryLoaderController} that is used to control the view for loading {@link DictionaryFile}s. */
 	private DictionaryLoaderController dictionaryLoaderController;
 
@@ -50,20 +52,14 @@ public class ApplicationController extends Application {
 	/** The {@link DictionaryFile} that contains a {@link model.WordList} that is used to generate a {@link Grid}. */
 	private DictionaryFile currentDictionaryFile;
 
-
-	public static void main( String[] args ) {
-		launch( args );
-	}
-
 	/**
 	 * Called by the system to Start the {@link ApplicationController}.  This will initialize the view and contoler
 	 * references.  It then changes the view to the DictionaryLoaderView, which is the default.
 	 *
 	 * @param primaryStage {@link Stage} passed in by the system when the {@link ApplicationController} launches.
-	 * @throws Exception Default exception thrown by the system if the Window fails to launch.
+	 * @throws IOException Exception thrown if either of the views fails to load.
 	 */
-	@Override
-	public void start( Stage primaryStage ) throws Exception {
+	public void start( Stage primaryStage ) throws IOException {
 		mainStage = primaryStage;
 
 		initDictionaryLoader( );
