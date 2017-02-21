@@ -11,9 +11,7 @@ import java.util.Collections;
  * @version - 14/Feb/2017
  */
 public class WordList {
-	/**
-	 * An {@link ArrayList} of {@link Word}s that contains all the words from a {@link DictionaryFile}.
-	 */
+	/** The {@link ArrayList} of {@link Word}s that contains all the words from a {@link DictionaryFile}. */
 	private ArrayList< Word > wordsArrayList;
 
 	/**
@@ -87,7 +85,8 @@ public class WordList {
 	/**
 	 * Print each {@link Word} in this {@link WordList} using the {@link Word}'s toString method.
 	 *
-	 * @return A {@link String} containing all the word-definition pairs in this {@link WordList}.  Each word on a new line.
+	 * @return A {@link String} containing all the word-definition pairs in this {@link WordList}.  Each word on a new
+	 * line.
 	 */
 	@Override
 	public String toString() {
@@ -100,8 +99,9 @@ public class WordList {
 	}
 
 	/**
-	 * Push the indicated {@link Word} to the back of the {@link WordList},  this will effectively make it the last word in line
-	 * to be placed on the {@link Grid}.  Used if a word is unable to find a suitable {@link WordPlacement} based on the current {@link Grid}.
+	 * Push the indicated {@link Word} to the back of the {@link WordList},  this will effectively make it the last word
+	 * in line to be placed on the {@link Grid}.  Used if a word is unable to find a suitable {@link WordPlacement}
+	 * based on the current {@link Grid}.
 	 *
 	 * @param word Which {@link Word} to push to the back.
 	 */

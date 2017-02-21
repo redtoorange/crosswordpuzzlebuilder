@@ -14,36 +14,30 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * CrosswordViewController.java - The controller for the CrosswordView.  JavaFX injects this controller into the CrosswordView
- * automatically.
+ * CrosswordViewController.java - The controller for the CrosswordView.  JavaFX injects this controller into the
+ * CrosswordView automatically.
  *
  * @author - Andrew McGuiness
  * @version - 14/Feb/2017
  */
 public class CrosswordViewController {
-
-	/**
-	 * The main {@link ApplicationController} that is used to control the entire Application.
-	 */
+	/** The main {@link ApplicationController} that is used to control the entire Application. */
 	private ApplicationController applicationController;
-	/**
-	 * The currently loaded {@link PuzzleImage}, used to save the {@link File}s to disk.
-	 */
+
+	/** The currently loaded {@link PuzzleImage}, used to save the {@link File}s to disk. */
 	private PuzzleImage puzzleImage;
-	/**
-	 * {@link ImageView} that displays the answered {@link BufferedImage} from the {@link PuzzleImage}.
-	 */
+
+	/** The {@link ImageView} that displays the answered {@link BufferedImage} from the {@link PuzzleImage}. */
 	@FXML
 	private ImageView answeredImage;
-	/**
-	 * {@link ImageView} that displays the blank {@link BufferedImage} from the {@link PuzzleImage}.
-	 */
+
+	/** The {@link ImageView} that displays the blank {@link BufferedImage} from the {@link PuzzleImage}. */
 	@FXML
 	private ImageView blankImage;
-	/**
-	 * A cached reference for a {@link FileChooser} that is used for saving files to the disk.
-	 */
+
+	/** The cached reference for a {@link FileChooser} that is used for saving files to the disk. */
 	private FileChooser fileChooser;
+
 
 	/**
 	 * {@link ActionEvent} Listener that is called when the save button is clicked on the CrossWordView.

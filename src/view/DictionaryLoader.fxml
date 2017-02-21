@@ -5,16 +5,18 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-
-<Pane fx:id="root" prefHeight="116.0" prefWidth="221.0" scaleShape="false" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.DictionaryLoaderController">
-   <children>
-      <Label layoutX="68.0" layoutY="14.0" text="Dictionary Location" />
-      <HBox alignment="CENTER" layoutX="19.0" layoutY="31.0" prefHeight="47.0" prefWidth="201.0">
-         <children>
-            <TextField fx:id="filePathText" onAction="#filePathTextEntered" />
-            <Button fx:id="fileChooserButton" mnemonicParsing="false" onAction="#fileChooserButtonClicked" text="..." />
-         </children>
-      </HBox>
-      <Button fx:id="generateButton" disable="true" layoutX="87.0" layoutY="78.0" mnemonicParsing="false" onAction="#generateButtonClicked" text="Generate" />
-   </children>
+<Pane xmlns:fx="http://javafx.com/fxml/1" fx:id="root" prefHeight="116.0" prefWidth="221.0" scaleShape="false"
+      xmlns="http://javafx.com/javafx/8.0.111" fx:controller="control.DictionaryLoaderController">
+    <children>
+        <Label layoutX="68.0" layoutY="14.0" text="Dictionary Location"/>
+        <HBox alignment="CENTER" layoutX="19.0" layoutY="31.0" prefHeight="47.0" prefWidth="201.0">
+            <children>
+                <TextField fx:id="filePathText" onAction="#filePathTextEntered"/>
+                <Button fx:id="fileChooserButton" mnemonicParsing="false" onAction="#fileChooserButtonClicked"
+                        text="..."/>
+            </children>
+        </HBox>
+        <Button fx:id="generateButton" disable="true" layoutX="87.0" layoutY="78.0" mnemonicParsing="false"
+                onAction="#generateButtonClicked" text="Generate"/>
+    </children>
 </Pane>

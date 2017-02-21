@@ -14,29 +14,34 @@ import java.io.IOException;
  */
 public class PuzzleImage {
 	/**
-	 * The {@link BufferedImage} that is written to by the {@link control.PuzzleImageController}.  It is saved to the disk
-	 * by the {@link control.CrosswordViewController} when the user selects save.
+	 * The {@link BufferedImage} that is written to by the {@link control.PuzzleImageController}.  It is saved to the
+	 * disk by the {@link control.CrosswordViewController} when the user selects save.
 	 */
 	private BufferedImage blankImage;
+
 	/**
-	 * The {@link BufferedImage} that is written to by the {@link control.PuzzleImageController}.  It is saved to the disk
-	 * by the {@link control.CrosswordViewController} when the user selects save.
+	 * The {@link BufferedImage} that is written to by the {@link control.PuzzleImageController}.  It is saved to the
+	 * disk by the {@link control.CrosswordViewController} when the user selects save.
 	 */
 	private BufferedImage answeredImage;
 
 	/**
-	 * The local {@link File} that is saved inside the Application's folder.  This allows the {@link control.CrosswordViewController}
-	 * to load the {@link File} into an {@link javafx.scene.image.ImageView} so the user can review it.
+	 * The local {@link File} that is saved inside the Application's folder.  This allows the {@link
+	 * control.CrosswordViewController} to load the {@link File} into an {@link javafx.scene.image.ImageView} so the
+	 * user can review it.
 	 */
 	private File blankImageFile = new File( "blank_temp.png" );
+
 	/**
-	 * The local {@link File} that is saved inside the Application's folder.  This allows the {@link control.CrosswordViewController}
-	 * to load the {@link File} into an {@link javafx.scene.image.ImageView} so the user can review it.
+	 * The local {@link File} that is saved inside the Application's folder.  This allows the {@link
+	 * control.CrosswordViewController} to load the {@link File} into an {@link javafx.scene.image.ImageView} so the
+	 * user can review it.
 	 */
 	private File answeredImageFile = new File( "filled_temp.png" );
 
 	/**
-	 * Create a new {@link PuzzleImage} and populate the two {@link BufferedImage}s that represent this puzzle completely.
+	 * Create a new {@link PuzzleImage} and populate the two {@link BufferedImage}s that represent this puzzle
+	 * completely.
 	 *
 	 * @param blankImage    The blank puzzle {@link BufferedImage} (no answers)
 	 * @param answeredImage The filled puzzle {@link BufferedImage} (answered)
@@ -47,8 +52,8 @@ public class PuzzleImage {
 	}
 
 	/**
-	 * For the {@link javafx.scene.image.ImageView} to work, the {@link BufferedImage}s need to be stored to disk.  This method writes both
-	 * {@link BufferedImage} to the disk as temp {@link File}.
+	 * For the {@link javafx.scene.image.ImageView} to work, the {@link BufferedImage}s need to be stored to disk.  This
+	 * method writes both {@link BufferedImage} to the disk as temp {@link File}.
 	 */
 	public void storeTempFiles() {
 		try {

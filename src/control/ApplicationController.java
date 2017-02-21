@@ -9,9 +9,12 @@ import model.ApplicationState;
 import model.DictionaryFile;
 import model.Grid;
 
+import java.io.IOException;
+
 /**
- * ApplicationController.java - Main Controller class for the {@link Application}.  Controls {@link Scene} switching and message
- * passing between the Primary Controllers, {@link DictionaryLoaderController} and {@link CrosswordViewController}.
+ * ApplicationController.java - Main Controller class for the {@link Application}.  Controls {@link Scene} switching and
+ * message passing between the Primary Controllers, {@link DictionaryLoaderController} and {@link
+ * CrosswordViewController}.
  *
  * @author Andrew McGuiness
  * @version 14/Feb/2017
@@ -20,58 +23,43 @@ import model.Grid;
  * @see GridController
  * @see PuzzleImageController
  */
-public class ApplicationController extends Application {
-	/**
-	 * {@link DictionaryLoaderController} that is used to control the view for loading {@link DictionaryFile}s.
-	 */
+public class ApplicationController {
+	/** The {@link DictionaryLoaderController} that is used to control the view for loading {@link DictionaryFile}s. */
 	private DictionaryLoaderController dictionaryLoaderController;
+
 	/**
-	 * {@link CrosswordViewController} that is control the CrosswordPuzzle view, which is used to view the
-	 * {@link model.PuzzleImage}s genetated with the {@link PuzzleImageController}.
+	 * The {@link CrosswordViewController} that is control the CrosswordPuzzle view, which is used to view the
+	 * {@link model.PuzzleImage}s generated with the {@link PuzzleImageController}.
 	 */
 	private CrosswordViewController crosswordViewController;
-	/**
-	 * {@link GridController} that is used to build a {@link Grid} from the {@link DictionaryFile}.
-	 */
+
+	/** The {@link GridController} that is used to build a {@link Grid} from the {@link DictionaryFile}. */
 	private GridController gridController;
-	/**
-	 * {@link PuzzleImageController} that is used to build a {@link model.PuzzleImage} from the {@link Grid}.
-	 */
+
+	/** The {@link PuzzleImageController} that is used to build a {@link model.PuzzleImage} from the {@link Grid}. */
 	private PuzzleImageController puzzleImageController;
 
 
-	/**
-	 * {@link Scene} view loaded in with a {@link FXMLLoader}.  Used to load in a {@link DictionaryFile}.
-	 */
+	/** The {@link Scene} view loaded in with a {@link FXMLLoader}.  Used to load in a {@link DictionaryFile}. */
 	private Scene dictionaryScene;
-	/**
-	 * {@link Scene} view loaded in with a {@link FXMLLoader}.  Used to view the {@link model.PuzzleImage}s.
-	 */
+
+	/** The {@link Scene} view loaded in with a {@link FXMLLoader}.  Used to view the {@link model.PuzzleImage}s. */
 	private Scene viewerScene;
 
-	/**
-	 * {@link Stage} passed in by the system.  Is the primary window handle.
-	 */
+	/** The {@link Stage} passed in by the system.  Is the primary window handle. */
 	private Stage mainStage;
-	/**
-	 * {@link DictionaryFile} that contains a {@link model.WordList} that is used to generate a {@link Grid}.
-	 */
+
+	/** The {@link DictionaryFile} that contains a {@link model.WordList} that is used to generate a {@link Grid}. */
 	private DictionaryFile currentDictionaryFile;
-
-
-	public static void main( String[] args ) {
-		launch( args );
-	}
 
 	/**
 	 * Called by the system to Start the {@link ApplicationController}.  This will initialize the view and contoler
 	 * references.  It then changes the view to the DictionaryLoaderView, which is the default.
 	 *
 	 * @param primaryStage {@link Stage} passed in by the system when the {@link ApplicationController} launches.
-	 * @throws Exception	Default exception thrown by the system if the Window fails to launch.
+	 * @throws IOException Exception thrown if either of the views fails to load.
 	 */
-	@Override
-	public void start( Stage primaryStage ) throws Exception {
+	public void start( Stage primaryStage ) throws IOException {
 		mainStage = primaryStage;
 
 		initDictionaryLoader( );
@@ -87,7 +75,7 @@ public class ApplicationController extends Application {
 	/**
 	 * Initialize the DictionaryLoaderView and the {@link DictionaryLoaderController}.
 	 *
-	 * @throws java.io.IOException	if the {@link FXMLLoader} fails to find the FXML file.
+	 * @throws java.io.IOException if the {@link FXMLLoader} fails to find the FXML file.
 	 */
 	private void initDictionaryLoader() throws java.io.IOException {
 		FXMLLoader dictionay = new FXMLLoader( getClass( ).getResource( "../view/DictionaryLoader.fxml" ) );
@@ -136,7 +124,8 @@ public class ApplicationController extends Application {
 	/**
 	 * Set the {@link DictionaryFile} to then call the {@link #generateCrossword(DictionaryFile)} method.
 	 *
-	 * @param dictionaryFile {@link DictionaryFile} to set the current {@link DictionaryFile} to and use for generation.
+	 * @param dictionaryFile {@link DictionaryFile} to set the current {@link DictionaryFile} to and use for
+	 *                       generation.
 	 */
 	public void generateCrossword( DictionaryFile dictionaryFile ) {
 		this.currentDictionaryFile = dictionaryFile;
@@ -144,8 +133,8 @@ public class ApplicationController extends Application {
 	}
 
 	/**
-	 * Generate a {@link Grid} using the {@link GridController}, then use that to create a {@link model.PuzzleImage} using the
-	 * {@link PuzzleImageController} and display it using the {@link CrosswordViewController}.
+	 * Generate a {@link Grid} using the {@link GridController}, then use that to create a {@link model.PuzzleImage}
+	 * using the {@link PuzzleImageController} and display it using the {@link CrosswordViewController}.
 	 */
 	public void generateCrossword() {
 		currentDictionaryFile.reset( );

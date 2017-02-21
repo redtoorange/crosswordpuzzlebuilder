@@ -3,9 +3,9 @@ package model;
 import java.util.ArrayList;
 
 /**
- * Grid.java - Represents a {@link Grid} of {@link GridCell}s, each one containing a letter.  The {@link Grid} maintains an
- * {@link ArrayList} of {@link Word}s that are currently on it.  This is a purely model class, that must be created using
- * a {@link control.GridController}.
+ * Grid.java - Represents a {@link Grid} of {@link GridCell}s, each one containing a letter.  The {@link Grid} maintains
+ * an {@link ArrayList} of {@link Word}s that are currently on it.  This is a purely model class, that must be created
+ * using a {@link control.GridController}.
  *
  * @author - Andrew McGuiness
  * @version - 14/Feb/2017
@@ -14,19 +14,15 @@ import java.util.ArrayList;
  * @see Word
  */
 public class Grid {
-	/**
-	 * Int representing the number of columns in the {@link Grid}.
-	 */
+	/** The int representing the number of columns in the {@link Grid}. */
 	private int width;
-	/**
-	 * Int representing the number of rows in the {@link Grid}.
-	 */
+
+	/** The int representing the number of rows in the {@link Grid}. */
 	private int height;
 
-	/**
-	 * Two dimensional array of {@link GridCell}s.
-	 */
+	/** The two dimensional array of {@link GridCell}s. */
 	private GridCell[][] letterGrid;
+
 	/**
 	 * All of the {@link Word}s that are on this {@link Grid}.  These are maintained to prevent GC of the {@link Word}s
 	 * if the {@link DictionaryFile} that contains them is ever deleted.
@@ -36,8 +32,10 @@ public class Grid {
 	/**
 	 * Initialize a {@link Grid} on a what the {@link control.GridController} feeds in.
 	 *
-	 * @param width       The final cell count width of the {@link Grid} after generation by the {@link control.GridController}.
-	 * @param height      The final cell count height of the {@link Grid} after generation by the {@link control.GridController}.
+	 * @param width       The final cell count width of the {@link Grid} after generation by the {@link
+	 *                    control.GridController}.
+	 * @param height      The final cell count height of the {@link Grid} after generation by the {@link
+	 *                    control.GridController}.
 	 * @param letterGrid  The 2D array of {@link GridCell}s that this {@link Grid} is based on.
 	 * @param wordsOnGrid The {@link ArrayList} of all {@link Word}s on this {@link Grid}.
 	 */

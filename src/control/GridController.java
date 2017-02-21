@@ -18,38 +18,31 @@ import java.util.Random;
  * @see Word
  */
 public class GridController {
-	/**
-	 * Arbitrary width chosen to start the {@link GridCell} at.  Allows for enough room to expand.
-	 */
+	/** The arbitrary width chosen to start the {@link GridCell} at.  Allows for enough room to expand. */
 	private static int STARTING_WIDTH = 100;
-	/**
-	 *  Arbitrary height chosen to start the {@link GridCell} at.  Allows for enough room to expand.
-	 */
+
+	/** The arbitrary height chosen to start the {@link GridCell} at.  Allows for enough room to expand. */
 	private static int STARTING_HEIGHT = 100;
 
-	/**
-	 * A 2D array of {@link GridCell}s that represents the crossword puzzle board.
-	 */
+	/** The 2D array of {@link GridCell}s that represents the crossword puzzle board. */
 	private GridCell[][] letterGrid;
-	/**
-	 * An {@link ArrayList} containing all the {@link Word}s that are currently written on the {@link GridCell} array.
-	 */
-	private ArrayList<Word> wordsOnGrid;
-	/**
-	 * Dimensions of the {@link GridCell} array.
-	 */
+
+	/** The {@link ArrayList} containing all the {@link Word}s that are currently written on the {@link GridCell} array. */
+	private ArrayList< Word > wordsOnGrid;
+
+	/** The Dimension of the {@link GridCell} array. */
 	private int width, height;
+
 
 	/**
 	 * Essentially a factory method to create a {@link Grid} from a given {@link DictionaryFile}
 	 *
 	 * @param dictionaryFile The {@link DictionaryFile} to pull the {@link WordList} from.
-	 *
 	 * @return The finished {@link Grid} object.
 	 */
 	public Grid createGrid( DictionaryFile dictionaryFile ) {
-		wordsOnGrid = new ArrayList<Word>( );
-		letterGrid = new GridCell[ STARTING_WIDTH ][ STARTING_HEIGHT ];
+		wordsOnGrid = new ArrayList< Word >( );
+		letterGrid = new GridCell[STARTING_WIDTH][STARTING_HEIGHT];
 		width = STARTING_WIDTH;
 		height = STARTING_HEIGHT;
 
@@ -62,20 +55,20 @@ public class GridController {
 	/**
 	 * Initialize all the {@link GridCell} references in the 2D letterGrid array.
 	 */
-	private void initGridCells( ) {
+	private void initGridCells() {
 		for ( int x = 0; x < letterGrid.length; x++ )
-			for ( int y = 0; y < letterGrid[ x ].length; y++ )
-				letterGrid[ x ][ y ] = new GridCell( );
+			for ( int y = 0; y < letterGrid[x].length; y++ )
+				letterGrid[x][y] = new GridCell( );
 	}
 
 	/**
 	 * Reset each {@link GridCell} in the 2d letterGrid array.  Used when the {@link GridCell} needs to be
 	 * reset for a new iteration.
 	 */
-	private void resetGridCells( ) {
+	private void resetGridCells() {
 		for ( int x = 0; x < letterGrid.length; x++ )
-			for ( int y = 0; y < letterGrid[ x ].length; y++ )
-				letterGrid[ x ][ y ].reset( );
+			for ( int y = 0; y < letterGrid[x].length; y++ )
+				letterGrid[x][y].reset( );
 	}
 
 	/**
@@ -104,7 +97,7 @@ public class GridController {
 	 * A soft-reset of the {@link GridCell} array that doesn't manipulate the letterGrid Array dimensions.
 	 * Used when the grid is found to be invalid.
 	 */
-	private void clearTheGrid( ) {
+	private void clearTheGrid() {
 		resetGridCells( );
 		wordsOnGrid.clear( );
 	}
@@ -113,7 +106,6 @@ public class GridController {
 	 * Attempt to find a spot for all the {@link Word}s in the {@link WordList} of the {@link DictionaryFile}.
 	 *
 	 * @param words The {@link WordList} to be placed on the {@link GridCell} grid.
-	 *
 	 * @return True of all the {@link Word}s in the {@link WordList} were placed on the {@link GridCell} grid.
 	 */
 	private boolean attemptToPlaceAllWords( WordList words ) {
@@ -127,7 +119,8 @@ public class GridController {
 						words.pushToBack( currentWord );
 					}
 				}
-			} else
+			}
+			else
 				words.pushToBack( currentWord );
 
 			currentWord = words.getNextUnplaced( );
@@ -141,7 +134,7 @@ public class GridController {
 	 * Resize the 2D {@link GridCell} array to fit around the elements on the {@link Grid}.
 	 * Basically clears out empty columns and rows from the {@link GridCell} array.
 	 */
-	private void fitGridToCrossWord( ) {
+	private void fitGridToCrossWord() {
 		BoundingBox box = new BoundingBox( );
 
 		calculateExtents( box );
@@ -159,8 +152,8 @@ public class GridController {
 	 */
 	private void calculateExtents( BoundingBox box ) {
 		for ( int x = 0; x < letterGrid.length; x++ )
-			for ( int y = 0; y < letterGrid[ x ].length; y++ )
-				if ( letterGrid[ x ][ y ].getReferences( ).size( ) > 0 )
+			for ( int y = 0; y < letterGrid[x].length; y++ )
+				if ( letterGrid[x][y].getReferences( ).size( ) > 0 )
 					boundsCheck( box, x, y );
 	}
 
@@ -213,15 +206,14 @@ public class GridController {
 	 * Copy the contents of the default {@link GridCell} array into a new, resized {@link GridCell} array.
 	 *
 	 * @param box The {@link BoundingBox} that contains the extents of the {@link GridCell} array.
-	 *
 	 * @return A new 2D {@link GridCell} array that has all the referenced {@link GridCell}s copied.
 	 */
 	private GridCell[][] copyToNewCellGrid( BoundingBox box ) {
-		GridCell[][] newGrid = new GridCell[ width ][ height ];
+		GridCell[][] newGrid = new GridCell[width][height];
 
 		for ( int x = 1; x < width - 1; x++ )
 			for ( int y = 1; y < height - 1; y++ )
-				newGrid[ x ][ y ] = letterGrid[ x + box.getMinX( ) - 1 ][ y + box.getMinY( ) - 1 ];
+				newGrid[x][y] = letterGrid[x + box.getMinX( ) - 1][y + box.getMinY( ) - 1];
 
 		return newGrid;
 	}
@@ -230,7 +222,6 @@ public class GridController {
 	 * Try to place the given {@link Word} on the {@link GridCell} array.
 	 *
 	 * @param currentWord Which {@link Word} to try to find a valid {@link WordPlacement} for.
-	 *
 	 * @return True if the {@link Word} was successfully placed.
 	 */
 	private boolean attemptToPlaceWord( Word currentWord ) {
@@ -239,11 +230,12 @@ public class GridController {
 		if ( wordsOnGrid.isEmpty( ) ) {
 			placeFirstWord( currentWord );
 			success = true;
-		} else {
+		}
+		else {
 			String current = currentWord.getWordString( );
 
-			ArrayList<WordPlacement> letterMatches = findLetterMatches( current );
-			ArrayList<WordPlacement> placements = generatePlacements( letterMatches, current );
+			ArrayList< WordPlacement > letterMatches = findLetterMatches( current );
+			ArrayList< WordPlacement > placements = generatePlacements( letterMatches, current );
 
 			WordPlacement bestPlacement = findBestPlacement( placements );
 
@@ -267,17 +259,16 @@ public class GridController {
 	 * Object that represents a potential overlap location.
 	 *
 	 * @param current The {@link Word} representation of the current {@link Word}.
-	 *
 	 * @return An {@link ArrayList} of {@link WordPlacement}s that represents all the overlaps that are suitable.
 	 */
-	private ArrayList<WordPlacement> findLetterMatches( String current ) {
-		ArrayList<WordPlacement> potentialLocations = new ArrayList<WordPlacement>( );
+	private ArrayList< WordPlacement > findLetterMatches( String current ) {
+		ArrayList< WordPlacement > potentialLocations = new ArrayList< WordPlacement >( );
 
 		for ( char c : current.toCharArray( ) ) {
 			for ( Word w : wordsOnGrid ) {
 				char[] letters = w.getWordString( ).toCharArray( );
 				for ( int i = 1; i < letters.length; i++ ) {
-					if ( letters[ i ] == c ) {
+					if ( letters[i] == c ) {
 						Vector2 spot = new Vector2( w.getWordPlacement( ).getStartPosition( ) );
 						Orientation orientation = w.getWordPlacement( ).getOrientation( );
 
@@ -301,16 +292,15 @@ public class GridController {
 	 *
 	 * @param potentialOverlaps A {@link ArrayList} of all the overlaps detected.
 	 * @param current           The {@link String} representation of the current {@link Word}.
-	 *
 	 * @return An {@link ArrayList} of all the valid {@link WordPlacement}s that have been generated that would cause
 	 * overlaps.
 	 */
-	private ArrayList<WordPlacement> generatePlacements( ArrayList<WordPlacement> potentialOverlaps, String current ) {
-		ArrayList<WordPlacement> placements = new ArrayList<WordPlacement>( );
+	private ArrayList< WordPlacement > generatePlacements( ArrayList< WordPlacement > potentialOverlaps, String current ) {
+		ArrayList< WordPlacement > placements = new ArrayList< WordPlacement >( );
 
 		for ( WordPlacement potentialOverlap : potentialOverlaps ) {
 			Vector2 focusPoint = new Vector2( potentialOverlap.getStartPosition( ) );
-			char matchedLetter = letterGrid[ focusPoint.getX( ) ][ focusPoint.getY( ) ].getCharacter( );
+			char matchedLetter = letterGrid[focusPoint.getX( )][focusPoint.getY( )].getCharacter( );
 			int index = current.indexOf( matchedLetter );
 
 			while ( index >= 0 ) {
@@ -345,7 +335,6 @@ public class GridController {
 	 * @param orientation The {@link Orientation} to test.
 	 * @param startX      The starting X position to test.
 	 * @param startY      The starting Y position to test.
-	 *
 	 * @return Null if invalid, otherwise the {@link WordPlacement} was determined to be valid.
 	 */
 	private WordPlacement testPlacement( String current, Orientation orientation, final int startX, final int startY ) {
@@ -353,7 +342,7 @@ public class GridController {
 		boolean withinBounds = isWithinBounds( orientation, startX, startY, current.length( ) );
 
 		if ( withinBounds ) {
-			ArrayList<Word> possibleOverlaps = new ArrayList<Word>( );
+			ArrayList< Word > possibleOverlaps = new ArrayList< Word >( );
 			boolean conflicts = testGridCells( current, orientation, startX, startY, /*MODIFIED*/ possibleOverlaps );
 
 			if ( !conflicts ) {
@@ -374,21 +363,21 @@ public class GridController {
 	 * @param orientation What {@link Orientation} that should be tested for conflicts
 	 * @param startX      The starting X position
 	 * @param startY      The starting Y position
-	 *
 	 * @return False if there are no conflicts.
 	 */
 	private boolean findPositionConflicts( String current, Orientation orientation, int startX, int startY ) {
 		boolean conflicts = false;
 
 		if ( orientation == Orientation.HORIZONTAL ) {
-			if ( startX + current.length( ) < width && letterGrid[ startX + current.length( ) ][ startY ].getReferences( ).size( ) != 0 )
+			if ( startX + current.length( ) < width && letterGrid[startX + current.length( )][startY].getReferences( ).size( ) != 0 )
 				conflicts = true;
-			if ( startX - 1 > 0 && letterGrid[ startX - 1 ][ startY ].getReferences( ).size( ) != 0 )
+			if ( startX - 1 > 0 && letterGrid[startX - 1][startY].getReferences( ).size( ) != 0 )
 				conflicts = true;
-		} else if ( orientation == Orientation.VERTICAL ) {
-			if ( startY + current.length( ) < height && letterGrid[ startX ][ startY + current.length( ) ].getReferences( ).size( ) != 0 )
+		}
+		else if ( orientation == Orientation.VERTICAL ) {
+			if ( startY + current.length( ) < height && letterGrid[startX][startY + current.length( )].getReferences( ).size( ) != 0 )
 				conflicts = true;
-			if ( startY - 1 > 0 && letterGrid[ startX ][ startY - 1 ].getReferences( ).size( ) != 0 )
+			if ( startY - 1 > 0 && letterGrid[startX][startY - 1].getReferences( ).size( ) != 0 )
 				conflicts = true;
 		}
 
@@ -407,10 +396,9 @@ public class GridController {
 	 * @param startY           The starting Y position to test.
 	 * @param possibleOverlaps An {@link ArrayList} that will contain all {@link Word} references that the tested {@link
 	 *                         WordPlacement} overlaps.
-	 *
 	 * @return False is there were no conflicts.  True if a {@link GridCell} in the path did not match the word.
 	 */
-	private boolean testGridCells( String current, Orientation orientation, int startX, int startY, ArrayList<Word> possibleOverlaps ) {
+	private boolean testGridCells( String current, Orientation orientation, int startX, int startY, ArrayList< Word > possibleOverlaps ) {
 		boolean letterConflicts = false;
 
 		int i = 0;
@@ -418,10 +406,11 @@ public class GridController {
 			char c = getChar( orientation, startX, startY, i );
 			if ( c != 0 ) {
 				if ( c == current.charAt( i ) ) {
-					ArrayList<Word> references = getReferences( orientation, startX, startY, i );
+					ArrayList< Word > references = getReferences( orientation, startX, startY, i );
 					for ( Word w : references )
 						possibleOverlaps.add( w );
-				} else {
+				}
+				else {
 					letterConflicts = true;
 				}
 			}
@@ -437,13 +426,12 @@ public class GridController {
 	 * @param x           The starting x position to be tested.
 	 * @param y           The starting y position to be tested.
 	 * @param offset      How much to offset the position based on the {@link Orientation}.
-	 *
 	 * @return A list of references to all the {@link Word}s that overlap the given {@link GridCell}.
 	 */
-	private ArrayList<Word> getReferences( Orientation orientation, final int x, final int y, final int offset ) {
+	private ArrayList< Word > getReferences( Orientation orientation, final int x, final int y, final int offset ) {
 		return orientation == Orientation.HORIZONTAL ?
-				letterGrid[ x + offset ][ y ].getReferences( ) :
-				letterGrid[ x ][ y + offset ].getReferences( );
+				letterGrid[x + offset][y].getReferences( ) :
+				letterGrid[x][y + offset].getReferences( );
 	}
 
 	/**
@@ -453,13 +441,12 @@ public class GridController {
 	 * @param x           The starting x position to be tested.
 	 * @param y           The starting y position to be tested.
 	 * @param offset      How much to offset the position based on the {@link Orientation}.
-	 *
 	 * @return the char that the {@link GridCell} contains.
 	 */
 	private char getChar( Orientation orientation, final int x, final int y, final int offset ) {
 		return orientation == Orientation.HORIZONTAL ?
-				letterGrid[ x + offset ][ y ].getCharacter( ) :
-				letterGrid[ x ][ y + offset ].getCharacter( );
+				letterGrid[x + offset][y].getCharacter( ) :
+				letterGrid[x][y + offset].getCharacter( );
 	}
 
 	/**
@@ -469,7 +456,6 @@ public class GridController {
 	 * @param x           The starting x position to be tested.
 	 * @param y           The starting y position to be tested.
 	 * @param wordLength  The length of the word that is being tested.
-	 *
 	 * @return True is the dimensions are within the bounds of the {@link GridCell} array.
 	 */
 	private boolean isWithinBounds( Orientation orientation, final int x, final int y, final int wordLength ) {
@@ -488,10 +474,9 @@ public class GridController {
 	 * This one will be used to place the {@link Word}.
 	 *
 	 * @param placements List of valid {@link WordPlacement}s on the {@link GridCell} array.
-	 *
 	 * @return The best {@link WordPlacement} determined by number of overlaps.
 	 */
-	private WordPlacement findBestPlacement( ArrayList<WordPlacement> placements ) {
+	private WordPlacement findBestPlacement( ArrayList< WordPlacement > placements ) {
 		WordPlacement bestPlacement = null;
 
 		if ( placements.size( ) > 0 ) {
@@ -518,10 +503,10 @@ public class GridController {
 		int y = wordPlacement.getStartPosition( ).getY( );
 
 		for ( int i = 0; i < string.length( ); i++ ) {
-			if ( letterGrid[ x ][ y ].getReferences( ).size( ) < 1 )
-				letterGrid[ x ][ y ].setCharacter( string.charAt( i ) );
+			if ( letterGrid[x][y].getReferences( ).size( ) < 1 )
+				letterGrid[x][y].setCharacter( string.charAt( i ) );
 
-			letterGrid[ x ][ y ].addReference( currentWord );
+			letterGrid[x][y].addReference( currentWord );
 
 			if ( wordPlacement.getOrientation( ) == Orientation.HORIZONTAL )
 				x++;
@@ -556,8 +541,8 @@ public class GridController {
 		int y = wordPlacement.getStartPosition( ).getY( );
 
 		for ( int i = 0; i < w.length( ); i++ ) {
-			if ( letterGrid[ x ][ y ].getCharacter( ) == w.charAt( i ) )
-				letterGrid[ x ][ y ].removeReference( currentWord );
+			if ( letterGrid[x][y].getCharacter( ) == w.charAt( i ) )
+				letterGrid[x][y].removeReference( currentWord );
 
 			if ( wordPlacement.getOrientation( ) == Orientation.HORIZONTAL )
 				x++;
@@ -591,7 +576,8 @@ public class GridController {
 
 		if ( orientation == Orientation.VERTICAL ) {
 			y -= currentWord.getWordString( ).length( );
-		} else {
+		}
+		else {
 			x -= currentWord.getWordString( ).length( );
 		}
 
@@ -606,9 +592,10 @@ public class GridController {
 	 * Make sure each {@link Word} that is on {@link GridCell} array still valid. If any are
 	 * found to be invalid, the blame is on the most recently added {@link Word}, so it will
 	 * be popped off the {@link GridCell} array.
+	 *
 	 * @return True if all {@link Word}s in the wordsOnGrid {@link ArrayList} are still valid.
 	 */
-	private boolean validateWordsOnBoard( ) {
+	private boolean validateWordsOnBoard() {
 		boolean keepChecking = true;
 		int index = 0;
 		while ( keepChecking && index < wordsOnGrid.size( ) ) {
@@ -625,7 +612,7 @@ public class GridController {
 	 * Remove the last {@link Word} from the wordsOnGrid {@link ArrayList} and {@link GridCell} array, because it
 	 * invalidated some other {@link Word} on the {@link GridCell} array.
 	 */
-	private void popLastWordOffBoard( ) {
+	private void popLastWordOffBoard() {
 		deleteWordFromGrid( wordsOnGrid.get( wordsOnGrid.size( ) - 1 ) );
 		wordsOnGrid.remove( wordsOnGrid.size( ) - 1 );
 	}
@@ -635,7 +622,6 @@ public class GridController {
 	 * before and after the {@link Word}.
 	 *
 	 * @param word The {@link Word} to validate.
-	 *
 	 * @return True if the {@link GridCell} are still clear, False if they are occupied.
 	 */
 	private boolean spacesBeforeAfterClear( Word word ) {
@@ -657,15 +643,14 @@ public class GridController {
 	 *
 	 * @param position The starting {@link Vector2} position of the {@link Word}.
 	 * @param length   The length of the {@link Word}
-	 *
 	 * @return False if the {@link GridCell} in-front or behind the {@link Word} is occupied.
 	 */
 	private boolean stillValidVertical( Vector2 position, int length ) {
 		boolean stillValid = true;
 
-		if ( position.getY( ) + length < height && letterGrid[ position.getX( ) ][ position.getY( ) + length ].getReferences( ).size( ) > 0 )
+		if ( position.getY( ) + length < height && letterGrid[position.getX( )][position.getY( ) + length].getReferences( ).size( ) > 0 )
 			stillValid = false;
-		if ( position.getY( ) - 1 > 0 && letterGrid[ position.getX( ) ][ position.getY( ) - 1 ].getReferences( ).size( ) > 0 )
+		if ( position.getY( ) - 1 > 0 && letterGrid[position.getX( )][position.getY( ) - 1].getReferences( ).size( ) > 0 )
 			stillValid = false;
 
 		return stillValid;
@@ -676,15 +661,14 @@ public class GridController {
 	 *
 	 * @param position The starting position of the {@link Word}.
 	 * @param length   The length of the {@link Word}
-	 *
 	 * @return False if the {@link GridCell} in-front or behind the {@link Word} is occupied.
 	 */
 	private boolean stillValidHorizontal( Vector2 position, int length ) {
 		boolean stillValid = true;
 
-		if ( position.getX( ) + length < width && letterGrid[ position.getX( ) + length ][ position.getY( ) ].getReferences( ).size( ) > 0 )
+		if ( position.getX( ) + length < width && letterGrid[position.getX( ) + length][position.getY( )].getReferences( ).size( ) > 0 )
 			stillValid = false;
-		if ( position.getX( ) - 1 > 0 && letterGrid[ position.getX( ) - 1 ][ position.getY( ) ].getReferences( ).size( ) > 0 )
+		if ( position.getX( ) - 1 > 0 && letterGrid[position.getX( ) - 1][position.getY( )].getReferences( ).size( ) > 0 )
 			stillValid = false;
 
 		return stillValid;
